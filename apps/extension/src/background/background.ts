@@ -1508,6 +1508,7 @@ const { initFn, keyRingService, analyticsService } = init(
         });
       }
     } catch (e) {
+      console.log("inside of background fetch error");
       console.log(e);
     }
   },

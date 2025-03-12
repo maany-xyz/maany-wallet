@@ -212,8 +212,11 @@ export const FinalizeKeyScene: FunctionComponent<{
           }[];
         }[] = [];
 
+        console.log("the candidate ADDRESS  ", candidateAddresses);
+
         promises = [];
         for (const modularChainInfo of chainStore.modularChainInfos) {
+          console.log("in here with modularChainInfo: ", modularChainInfo);
           if ("cosmos" in modularChainInfo) {
             const chainInfo = chainStore.getChain(
               modularChainInfo.cosmos.chainId

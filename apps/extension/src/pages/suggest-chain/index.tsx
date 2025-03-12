@@ -56,7 +56,7 @@ const SuggestChainPageImpl: FunctionComponent<{
       await chainSuggestStore.rejectWithProceedNext(waitingData.id, () => {});
     },
   });
-
+  console.log("in observer of SuggestChainPageImpl", waitingData);
   const queryCommunityChainInfo = chainSuggestStore.getCommunityChainInfo(
     waitingData.data.chainInfo.chainId
   );

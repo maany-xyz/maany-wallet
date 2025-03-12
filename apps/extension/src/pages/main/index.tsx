@@ -225,6 +225,7 @@ export const MainPage: FunctionComponent<{
 
   const lastTotalAvailableAmbiguousAvg = useRef(-1);
   const lastTotalStakedAmbiguousAvg = useRef(-1);
+  console.log("in main with isnotreadymsmmsms", isNotReady);
   useEffect(() => {
     if (!isNotReady) {
       const totalAvailableAmbiguousAvg = availableTotalPriceEmbedOnlyUSD

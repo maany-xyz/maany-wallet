@@ -453,9 +453,11 @@ export class ChainsService {
   );
 
   async tryUpdateChainInfoFromRepo(chainId: string): Promise<boolean> {
+    console.log("in tryUpdateChainInfoFromRepo");
     if (!this.hasChainInfo(chainId)) {
       throw new Error(`${chainId} is not registered`);
     }
+    console.log("chain has chaininfo");
 
     if (
       (this.getChainInfoOrThrow(chainId) as ChainInfoWithCoreTypes)
@@ -464,8 +466,11 @@ export class ChainsService {
       return false;
     }
 
+    console.log("next here");
+
     const isEvmOnlyChain = this.isEvmOnlyChain(chainId);
     const chainInfo = await this.fetchFromRepo(chainId, isEvmOnlyChain);
+    console.log("in here with chainInfo: ", chainInfo);
 
     if (!this.hasChainInfo(chainId)) {
       throw new Error(`${chainId} became unregistered after fetching`);
@@ -473,6 +478,9 @@ export class ChainsService {
 
     const chainIdentifier = ChainIdHelper.parse(chainId).identifier;
     const prevChainInfoFromRepo = this.getRepoChainInfo(chainId);
+    console.log("in here with chainIdentifier: ", chainIdentifier);
+    console.log("in here with prevChainInfoFromRepo: ", prevChainInfoFromRepo);
+
     if (
       !prevChainInfoFromRepo ||
       sortedJsonByKeyStringify(prevChainInfoFromRepo) !==
@@ -504,7 +512,13 @@ export class ChainsService {
     isEvmOnlyChain: boolean
   ): Promise<ChainInfo> {
     const chainIdentifier = ChainIdHelper.parse(chainId).identifier;
-
+    const domain = "http://localhost:8080"; // "https://raw.githubusercontent.com";
+    console.log(
+      "in fetchFromRepo with chainId",
+      chainIdentifier,
+      " and domain; ",
+      domain
+    );
     const res = await simpleFetch<
       (Omit<ChainInfo, "rest"> & { websocket: string }) | ChainInfo
     >(
@@ -512,12 +526,13 @@ export class ChainsService {
         ? this.communityChainInfoRepo.alternativeURL
             .replace("{chain_identifier}", chainIdentifier)
             .replace("/cosmos/", isEvmOnlyChain ? "/evm/" : "/cosmos/")
-        : `https://raw.githubusercontent.com/${
-            this.communityChainInfoRepo.organizationName
-          }/${this.communityChainInfoRepo.repoName}/${
-            this.communityChainInfoRepo.branchName
-          }/${isEvmOnlyChain ? "evm" : "cosmos"}/${chainIdentifier}.json`
+        : `${domain}/${this.communityChainInfoRepo.organizationName}/${
+            this.communityChainInfoRepo.repoName
+          }/${this.communityChainInfoRepo.branchName}/${
+            isEvmOnlyChain ? "evm" : "cosmos"
+          }/${chainIdentifier}.json`
     );
+    console.log("with result: ", res);
     const chainInfo: ChainInfo =
       "rest" in res.data && !isEvmOnlyChain
         ? res.data
@@ -547,6 +562,8 @@ export class ChainsService {
   }
 
   async tryUpdateChainInfoFromRpcOrRest(chainId: string): Promise<boolean> {
+    console.log("In try update chain with chainId: ", chainId);
+    console.log("anither console biatchfffff");
     if (!this.hasChainInfo(chainId)) {
       throw new Error(`${chainId} is not registered`);
     }

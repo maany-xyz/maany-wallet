@@ -32,7 +32,7 @@ export const VerifyMnemonicScene: FunctionComponent<{
   }
 
   const sceneTransition = useSceneTransition();
-
+  console.log("in verify-mnemonic: ", bip44Path);
   const header = useRegisterHeader();
   useSceneEvents({
     onWillVisible: () => {

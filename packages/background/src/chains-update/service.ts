@@ -241,11 +241,12 @@ export class ChainsUpdateService {
           chainIdentifier
         );
       } catch (e) {
+        console.log("inside update chain error");
         console.log(e);
         // Ignore error to proceed to tryUpdateChainInfoFromRpcOrRest if it fails.
       }
     }
-
+    console.log("are we moving to this line ?");
     const updated2 = await this.chainsService.tryUpdateChainInfoFromRpcOrRest(
       chainIdentifier
     );

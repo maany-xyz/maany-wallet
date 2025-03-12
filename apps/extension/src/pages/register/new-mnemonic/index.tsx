@@ -101,6 +101,7 @@ export const NewMnemonicScene: FunctionComponent = observer(() => {
     };
 
     if (wordsType === "12words") {
+      console.log("Creating 12 word mnemonic");
       Mnemonic.generateSeed(rng, 128).then((str) => setWords(str.split(" ")));
     } else if (wordsType === "24words") {
       Mnemonic.generateSeed(rng, 256).then((str) => setWords(str.split(" ")));

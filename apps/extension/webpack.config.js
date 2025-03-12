@@ -8,11 +8,17 @@ const BundleAnalyzerPlugin =
   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const fs = require("fs");
 
-const isBuildManifestV2 = process.env.BUILD_MANIFEST_V2 === "true";
+// Log environment variables to debug
+console.log("BUILD_MANIFEST_V2:", process.env.BUILD_MANIFEST_V2);
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("DISABLE_SPLIT_CHUNKS:", process.env.DISABLE_SPLIT_CHUNKS);
+console.log("ANALYZER:", process.env.ANALYZER);
 
+const isBuildManifestV2 = process.env.BUILD_MANIFEST_V2 === "true";
 const isEnvDevelopment = process.env.NODE_ENV !== "production";
 const isDisableSplitChunks = process.env.DISABLE_SPLIT_CHUNKS === "true";
 const isEnvAnalyzer = process.env.ANALYZER === "true";
+
 const commonResolve = (dir) => ({
   extensions: [".ts", ".tsx", ".js", ".jsx"],
   alias: {
@@ -35,7 +41,16 @@ const altResolve = () => {
 
   return {};
 };
-const tsRule = { test: /\.tsx?$/, loader: "ts-loader" };
+const tsRule = {
+  test: /\.tsx?$/,
+  loader: "ts-loader",
+  options: {
+    transpileOnly: false,
+    compilerOptions: {
+      sourceMap: true, // Ensure TS generates source maps
+    },
+  },
+};
 const fileRule = {
   test: /\.(svg|png|webm|mp4|jpe?g|gif|woff|woff2|eot|ttf)$/i,
   type: "asset/resource",
@@ -53,7 +68,9 @@ module.exports = {
   name: "extension",
   mode: isEnvDevelopment ? "development" : "production",
   // In development environment, turn on source map.
-  devtool: isEnvDevelopment ? "cheap-source-map" : false,
+  //changed from cheap-srouce-map
+  devtool: "source-map",
+  //isEnvDevelopment ? : false,
   // In development environment, webpack watch the file changes, and recompile
   watch: isEnvDevelopment,
   entry: {
@@ -73,57 +90,60 @@ module.exports = {
     filename: "[name].bundle.js",
   },
   optimization: {
-    splitChunks: {
-      chunks(chunk) {
-        if (isDisableSplitChunks) {
-          return false;
-        }
+    splitChunks: false, // Disable code splitting
+    usedExports: false,
+    minimize: false,
+    // splitChunks: {
+    //   chunks(chunk) {
+    //     if (isDisableSplitChunks) {
+    //       return false;
+    //     }
 
-        const servicePackages = ["contentScripts", "injectedScript"];
+    //     const servicePackages = ["contentScripts", "injectedScript"];
 
-        if (!isBuildManifestV2) {
-          servicePackages.push("background");
-        }
+    //     if (!isBuildManifestV2) {
+    //       servicePackages.push("background");
+    //     }
 
-        return !servicePackages.includes(chunk.name);
-      },
-      cacheGroups: {
-        ...(() => {
-          const res = {
-            popup: {
-              maxSize: 3_000_000,
-              maxInitialRequests: 100,
-              maxAsyncRequests: 100,
-            },
-            register: {
-              maxSize: 3_000_000,
-              maxInitialRequests: 100,
-              maxAsyncRequests: 100,
-            },
-            blocklist: {
-              maxSize: 3_000_000,
-              maxInitialRequests: 100,
-              maxAsyncRequests: 100,
-            },
-            ledgerGrant: {
-              maxSize: 3_000_000,
-              maxInitialRequests: 100,
-              maxAsyncRequests: 100,
-            },
-          };
+    //     return !servicePackages.includes(chunk.name);
+    //   },
+    //   cacheGroups: {
+    //     ...(() => {
+    //       const res = {
+    //         popup: {
+    //           maxSize: 3_000_000,
+    //           maxInitialRequests: 100,
+    //           maxAsyncRequests: 100,
+    //         },
+    //         register: {
+    //           maxSize: 3_000_000,
+    //           maxInitialRequests: 100,
+    //           maxAsyncRequests: 100,
+    //         },
+    //         blocklist: {
+    //           maxSize: 3_000_000,
+    //           maxInitialRequests: 100,
+    //           maxAsyncRequests: 100,
+    //         },
+    //         ledgerGrant: {
+    //           maxSize: 3_000_000,
+    //           maxInitialRequests: 100,
+    //           maxAsyncRequests: 100,
+    //         },
+    //       };
 
-          if (isBuildManifestV2) {
-            res.background = {
-              maxSize: 3_000_000,
-              maxInitialRequests: 100,
-              maxAsyncRequests: 100,
-            };
-          }
+    //       if (isBuildManifestV2) {
+    //         res.background = {
+    //           maxSize: 3_000_000,
+    //           maxInitialRequests: 100,
+    //           maxAsyncRequests: 100,
+    //         };
+    //       }
 
-          return res;
-        })(),
-      },
-    },
+    //       return res;
+    //     })(),
+    //   },
+    // },
   },
   resolve: {
     ...commonResolve("src/public/assets"),
@@ -216,6 +236,10 @@ module.exports = {
         {
           from: "../../node_modules/webextension-polyfill/dist/browser-polyfill.js",
           to: "./",
+        },
+        {
+          from: "../../packages/background/build/", // Copy built background service worker
+          to: "./background/",
         },
       ],
     }),

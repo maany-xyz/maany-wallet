@@ -54,6 +54,7 @@ export class ChainSuggestStore {
   }
 
   getCommunityChainInfoUrl(chainId: string): string {
+    console.log("your mudder");
     const isEvmOnlyChain = chainId.startsWith("eip155:");
     const chainIdHelper = ChainIdHelper.parse(chainId);
     return `${this.communityChainInfoRepoUrl}/blob/${
@@ -61,10 +62,21 @@ export class ChainSuggestStore {
     }/${isEvmOnlyChain ? "evm" : "cosmos"}/${chainIdHelper.identifier}.json`;
   }
 
+  // get customChainInfoRepoUrl(): string {
+  //   return `http://localhost.com/`
+  // }
+
+  // getCustomChainInfoUrl(chainId: string): string {
+  //   const isEvmOnlyChain = chainId.startsWith("eip155:");
+  //   const chainIdHelper = ChainIdHelper.parse(chainId);
+  //   return ``
+  // }
+
   getCommunityChainInfo(chainId: string): {
     chainInfo: ChainInfo | undefined;
     isLoading: boolean;
   } {
+    console.log("in getCommunityChainInfo");
     const chainIdentifier = ChainIdHelper.parse(chainId).identifier;
     if (!this.communityChainInfo.has(chainIdentifier)) {
       this.fetchCommunityChainInfo(chainId);
@@ -75,6 +87,7 @@ export class ChainSuggestStore {
 
   @flow
   protected *fetchCommunityChainInfo(chainId: string) {
+    console.log("in fetchCommunityChainInfo");
     const chainIdentifier = ChainIdHelper.parse(chainId).identifier;
     const communityChainInfo = this.communityChainInfo.get(chainIdentifier);
     if (communityChainInfo) {
@@ -86,6 +99,8 @@ export class ChainSuggestStore {
       chainInfo: undefined,
     });
 
+    const domain = "http://localhost:8080"; // "https://raw.githubusercontent.com";
+
     try {
       const isEvmOnlyChain = chainId.startsWith("eip155:");
       const response = yield* toGenerator(
@@ -96,11 +111,11 @@ export class ChainSuggestStore {
             ? this.communityChainInfoRepo.alternativeURL
                 .replace("{chain_identifier}", chainIdentifier)
                 .replace("/cosmos/", isEvmOnlyChain ? "/evm/" : "/cosmos/")
-            : `https://raw.githubusercontent.com/${
-                this.communityChainInfoRepo.organizationName
-              }/${this.communityChainInfoRepo.repoName}/${
-                this.communityChainInfoRepo.branchName
-              }/${isEvmOnlyChain ? "evm" : "cosmos"}/${chainIdentifier}.json`
+            : `${domain}/${this.communityChainInfoRepo.organizationName}/${
+                this.communityChainInfoRepo.repoName
+              }/${this.communityChainInfoRepo.branchName}/${
+                isEvmOnlyChain ? "evm" : "cosmos"
+              }/${chainIdentifier}.json`
         )
       );
       const chainInfo: ChainInfo =
