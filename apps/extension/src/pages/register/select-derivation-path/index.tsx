@@ -26,7 +26,6 @@ import { WalletIcon } from "../../../components/icon/wallet";
 import { Button } from "../../../components/button";
 import { useStore } from "../../../stores";
 import { Bech32Address } from "@keplr-wallet/cosmos";
-import { useNavigate } from "react-router";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useTheme } from "styled-components";
 import { AppCurrency } from "@keplr-wallet/types";
@@ -71,8 +70,6 @@ export const SelectDerivationPathScene: FunctionComponent<{
 
   const { chainStore, keyRingStore } = useStore();
 
-  const navigate = useNavigate();
-
   const sceneTransition = useSceneTransition();
 
   const chainId = chainIds[0];
@@ -90,9 +87,7 @@ export const SelectDerivationPathScene: FunctionComponent<{
       if (skipWelcome) {
         window.close();
       } else {
-        navigate("/welcome", {
-          replace: true,
-        });
+        sceneTransition.push("welcome-to-maany");
       }
     }
   };

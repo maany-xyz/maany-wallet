@@ -2,19 +2,18 @@ import React, { FunctionComponent } from "react";
 import { RegisterSceneBox } from "../components/register-scene-box";
 import { Stack } from "../../../components/stack";
 import { Button } from "../../../components/button";
-import {
-  useSceneEvents,
-  useSceneTransition,
-} from "../../../components/transition";
+import { useSceneEvents } from "../../../components/transition";
 import { useRegisterHeader } from "../components/header";
 import { YAxis } from "../../../components/axis";
 import { Gutter } from "../../../components/gutter";
 import { observer } from "mobx-react-lite";
-import { useIntl } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { Logo } from "../components/logo/logo";
+import { Subtitle2 } from "../../../components/typography";
+import { ColorPalette } from "../../../styles";
+import { Box } from "../../../components/box";
 
-export const RegisterIntroScene: FunctionComponent = observer(() => {
-  const sceneTransition = useSceneTransition();
+export const WelcomeToMaany: FunctionComponent = observer(() => {
   const intl = useIntl();
 
   const header = useRegisterHeader();
@@ -29,27 +28,29 @@ export const RegisterIntroScene: FunctionComponent = observer(() => {
   return (
     <RegisterSceneBox>
       <YAxis alignX="center">
-        <Logo />
+        <Logo fill={ColorPalette["yellow-400"]} />
       </YAxis>
       <Gutter size="3.125rem" />
+      <Box style={{ fontWeight: 600, fontSize: "64px", textAlign: "center" }}>
+        <FormattedMessage id="ACCOUNT CREATED" />
+      </Box>
+      <Subtitle2
+        color={ColorPalette["white"]}
+        style={{ textAlign: "center", marginBottom: 20, marginTop: 20 }}
+      >
+        <FormattedMessage
+          id="Click the Extensions button now to access your wallet.
+For more questions or contact options go here."
+        />
+      </Subtitle2>
       <Stack gutter="1.25rem">
         <Button
           text={intl.formatMessage({
-            id: "pages.register.intro.create-wallet-button",
+            id: "pages.register.pages.welcome.finish-button",
           })}
           size="large"
           onClick={() => {
-            sceneTransition.push("new-user");
-          }}
-        />
-        <Button
-          text={intl.formatMessage({
-            id: "pages.register.intro.import-wallet-button",
-          })}
-          size="large"
-          color="secondary"
-          onClick={() => {
-            sceneTransition.push("existing-user");
+            window.close();
           }}
         />
       </Stack>

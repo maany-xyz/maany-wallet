@@ -6,7 +6,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import styled, { useTheme } from "styled-components";
+import styled from "styled-components";
 import { ColorPalette } from "../../styles";
 import {
   FixedWidthSceneTransition,
@@ -40,6 +40,7 @@ import {
   ConnectKeystoneUSBScene,
 } from "./connect-keystone";
 import { ScanKeystoneScene } from "./connect-keystone/scan";
+import { WelcomeToMaany } from "./welcome-to-maany";
 
 const Container = styled.div`
   min-width: 100vw;
@@ -100,7 +101,6 @@ const RegisterPageImpl: FunctionComponent = observer(() => {
   const { chainStore } = useStore();
 
   const sceneRef = useRef<SceneTransitionRef | null>(null);
-  const theme = useTheme();
 
   const [searchParams] = useSearchParams();
 
@@ -214,15 +214,10 @@ const RegisterPageImpl: FunctionComponent = observer(() => {
       <Box
         position="relative"
         marginX="auto"
-        backgroundColor={
-          theme.mode === "light" ? ColorPalette.white : ColorPalette["gray-600"]
-        }
+        backgroundColor={ColorPalette["secondary-background"]}
         borderRadius="1.5rem"
         style={{
-          boxShadow:
-            theme.mode === "light"
-              ? "0px 1px 4px 0px rgba(43, 39, 55, 0.10)"
-              : "none",
+          boxShadow: "none",
         }}
       >
         <FixedWidthSceneTransition
@@ -246,7 +241,7 @@ const RegisterPageImpl: FunctionComponent = observer(() => {
             {
               name: "new-mnemonic",
               element: NewMnemonicScene,
-              width: "33.75rem",
+              width: "30.75rem",
             },
             {
               name: "verify-mnemonic",
@@ -312,6 +307,11 @@ const RegisterPageImpl: FunctionComponent = observer(() => {
               name: "select-derivation-path",
               element: SelectDerivationPathScene,
               width: "40rem",
+            },
+            {
+              name: "welcome-to-maany",
+              element: WelcomeToMaany,
+              width: "643px",
             },
             ...KeplrWalletPrivate.RegisterScenes,
           ]}

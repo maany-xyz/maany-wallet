@@ -3,5 +3,5 @@ import { BaseTypography } from "./base";
 
 export const Subtitle3 = styled(BaseTypography)`
   font-weight: 500;
-  font-size: 0.875rem;
+  font-size: 16px;
 `;

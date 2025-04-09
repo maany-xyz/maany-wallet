@@ -202,7 +202,7 @@ module.exports = {
       KEPLR_EXT_GOOGLE_API_KEY_FOR_MEASUREMENT: "",
       KEPLR_EXT_TOKEN_FACTORY_BASE_URL: "",
       KEPLR_EXT_TOKEN_FACTORY_URI: "",
-      KEPLR_EXT_TX_HISTORY_BASE_URL: "",
+      KEPLR_EXT_TX_HISTORY_BASE_URL: "https://satellite-develop.keplr.app",
       KEPLR_EXT_CONFIG_SERVER: "",
       WC_PROJECT_ID: "",
       KEPLR_EXT_EIP6963_PROVIDER_INFO_NAME: "Keplr",
@@ -237,10 +237,10 @@ module.exports = {
           from: "../../node_modules/webextension-polyfill/dist/browser-polyfill.js",
           to: "./",
         },
-        {
-          from: "../../packages/background/build/", // Copy built background service worker
-          to: "./background/",
-        },
+        // {
+        //   from: "../../packages/background/build/", // Copy built background service worker
+        //   to: "./background/",
+        // },
       ],
     }),
     // popup.html과 sidePanel.html은 사실 동일하다.

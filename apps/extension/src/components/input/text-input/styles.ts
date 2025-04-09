@@ -73,7 +73,7 @@ export const Styles = {
           ? ColorPalette["gray-100"]
           : ColorPalette["gray-400"];
       }};
-      border-radius: 0.5rem;
+      border-radius: 30px;
 
       pointer-events: none;
     }
@@ -101,7 +101,7 @@ export const Styles = {
       }}
     }
 
-    border-radius: 0.5rem;
+    border-radius: 30px;
     background-color: ${(props) =>
       props.theme.mode === "light"
         ? ColorPalette["white"]
@@ -124,7 +124,7 @@ export const Styles = {
         ? ColorPalette["white"]
         : ColorPalette["gray-700"]};
     border: 0;
-    border-radius: 0.5rem;
+    border-radius: 30px;
 
     color: ${(props) =>
       props.theme.mode === "light"

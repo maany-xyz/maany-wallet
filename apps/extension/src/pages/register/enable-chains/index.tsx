@@ -31,7 +31,6 @@ import {
 import { Button } from "../../../components/button";
 import { ColorPalette } from "../../../styles";
 import { useEffectOnce } from "../../../hooks/use-effect-once";
-import { useNavigate } from "react-router";
 import { ChainImageFallback } from "../../../components/image";
 import { Checkbox } from "../../../components/checkbox";
 import { KeyRingCosmosService } from "@keplr-wallet/background";
@@ -90,7 +89,6 @@ export const EnableChainsScene: FunctionComponent<{
       starknetQueriesStore,
     } = useStore();
 
-    const navigate = useNavigate();
     const intl = useIntl();
     const theme = useTheme();
 
@@ -779,9 +777,7 @@ export const EnableChainsScene: FunctionComponent<{
       if (skipWelcome) {
         window.close();
       } else {
-        navigate("/welcome", {
-          replace: true,
-        });
+        sceneTransition.push("welcome-to-maany");
       }
     };
 
