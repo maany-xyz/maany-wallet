@@ -7,6 +7,27 @@ const languageToFontFaces: {
 } = {
   en: [
     new FontFace(
+      "Maany",
+      `url(${require("./public/assets/font/PPRightGroteskText-Regular.ttf")})`,
+      {
+        weight: "400",
+      }
+    ),
+    new FontFace(
+      "Maany",
+      `url(${require("./public/assets/font/PPRightGrotesk-Regular.ttf")})`,
+      {
+        weight: "500",
+      }
+    ),
+    new FontFace(
+      "Maany",
+      `url(${require("./public/assets/font/PPRightGroteskText-CompactMedium.ttf")})`,
+      {
+        weight: "600",
+      }
+    ),
+    new FontFace(
       "Inter",
       `url(${require("./public/assets/font/Inter-Regular.ttf")})`,
       {

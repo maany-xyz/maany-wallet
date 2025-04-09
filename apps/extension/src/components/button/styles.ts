@@ -8,7 +8,7 @@ import {
   ButtonTheme,
 } from "./types";
 
-export const ButtonRadius = "0.375rem";
+export const ButtonRadius = "200px";
 
 export const makeTextAndSvgColor = (color: string) => {
   return css`
@@ -62,9 +62,13 @@ const buttonStyleFromColorAndMode: Record<
     light: {
       fill: {
         enabled: css`
-          background-color: ${ColorPalette["blue-400"]};
-
-          ${makeTextAndSvgColor(ColorPalette["white"])}
+          background-color: ${ColorPalette["yellow-300"]};
+          // Remove normalized css properties.
+          border-width: 0;
+          border-style: none;
+          border-color: transparent;
+          border-image: none;
+          ${makeTextAndSvgColor(ColorPalette["gray-950"])}
 
           :hover {
             ::after {
@@ -74,23 +78,33 @@ const buttonStyleFromColorAndMode: Record<
           }
         `,
         disabled: css`
-          background-color: ${ColorPalette["blue-400"]};
+          // Remove normalized css properties.
+          border-width: 0;
+          border-style: none;
+          border-color: transparent;
+          border-image: none;
+          background-color: ${ColorPalette["yellow-300"]};
 
           ::after {
             background-color: ${ColorPalette["gray-300"]};
             opacity: 0.4;
           }
 
-          ${makeTextAndSvgColor(ColorPalette["white"])}
+          ${makeTextAndSvgColor(ColorPalette["gray-950"])}
         `,
       },
     },
     dark: {
       fill: {
         enabled: css`
-          background-color: ${ColorPalette["blue-400"]};
+          // Remove normalized css properties.
+          border-width: 0;
+          border-style: none;
+          border-color: transparent;
+          border-image: none;
+          background-color: ${ColorPalette["yellow-300"]};
 
-          ${makeTextAndSvgColor(ColorPalette["white"])}
+          ${makeTextAndSvgColor(ColorPalette["gray-950"])}
 
           :hover {
             ::after {
@@ -100,14 +114,18 @@ const buttonStyleFromColorAndMode: Record<
           }
         `,
         disabled: css`
-          background-color: ${ColorPalette["blue-400"]};
-
+          background-color: ${ColorPalette["yellow-300"]};
+          // Remove normalized css properties.
+          border-width: 0;
+          border-style: none;
+          border-color: transparent;
+          border-image: none;
           ::after {
             background-color: ${ColorPalette["gray-600"]};
             opacity: 0.7;
           }
 
-          ${makeTextAndSvgColor(ColorPalette["white"])}
+          ${makeTextAndSvgColor(ColorPalette["gray-950"])}
         `,
       },
     },
@@ -138,10 +156,14 @@ const buttonStyleFromColorAndMode: Record<
     dark: {
       fill: {
         enabled: css`
-          background-color: ${ColorPalette["gray-500"]};
+          background-color: transparent;
 
-          ${makeTextAndSvgColor(ColorPalette["white"])}
-
+          ${makeTextAndSvgColor(ColorPalette["gray-200"])}
+          // Remove normalized css properties.
+          border-width: 1px;
+          border-style: solid;
+          border-color: ${ColorPalette["gray-200"]};
+          border-image: none;
           :hover {
             ::after {
               background-color: ${ColorPalette["gray-600"]};
@@ -152,7 +174,11 @@ const buttonStyleFromColorAndMode: Record<
 
         disabled: css`
           background-color: ${ColorPalette["gray-400"]};
-
+          // Remove normalized css properties.
+          border-width: 1px;
+          border-style: solid;
+          border-color: ${ColorPalette["gray-200"]};
+          border-image: none;
           ::after {
             background-color: ${ColorPalette["gray-600"]};
             opacity: 0.7;

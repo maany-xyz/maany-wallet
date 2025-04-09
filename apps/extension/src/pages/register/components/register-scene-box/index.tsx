@@ -6,10 +6,12 @@ import { ColorPalette } from "../../../../styles";
 export const RegisterSceneBox: FunctionComponent<
   PropsWithChildren<{
     style?: React.CSSProperties;
+    paddingX?: string;
+    paddingY?: string;
   }>
-> = ({ children, style }) => {
+> = ({ children, paddingX = "3.25rem", paddingY = "3rem", style }) => {
   return (
-    <Box paddingX="3.25rem" paddingY="3rem" style={style}>
+    <Box paddingX={paddingX} paddingY={paddingY} style={style}>
       {children}
     </Box>
   );

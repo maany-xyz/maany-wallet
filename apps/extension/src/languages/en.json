@@ -56,7 +56,7 @@
   "pages.register.intro-new-user.title": "Welcome to Keplr",
   "pages.register.intro-new-user.paragraph": "Select the way you want to create your wallet",
   "pages.register.intro-new-user.recovery-path-title": "Use Recovery Phrase",
-  "pages.register.intro-new-user.recovery-path-paragraph": "Maximum control & high compatibility across all wallets",
+  "pages.register.intro-new-user.recovery-path-paragraph": "Maximum control & higher security",
   "pages.register.intro-new-user.new-recovery-path-button": "Create new recovery phrase",
   "pages.register.intro-new-user.import-recovery-path-button": "Import existing recovery phrase",
   "pages.register.intro-new-user.high-security-text": "Higher Security",

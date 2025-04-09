@@ -8,6 +8,14 @@ export const GlobalStyle = createGlobalStyle`
   
   ${KeplrWalletPrivate.GlobalStyles}
   
+  /* Font import */
+  @font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/Inter-Regular.woff2') format('woff2');
+  }
+  
   html {
     // TODO: Change the scheme according to theme after theme feature is implemented.
     color-scheme: ${(props) =>
@@ -15,7 +23,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   
   html, body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Maany', sans-serif;
     -webkit-font-smoothing: antialiased;
     
     &[data-lang="ko"] {

@@ -56,20 +56,20 @@ export const ColorPalette = {
   "orange-700": "#58270B",
   "orange-800": "#2D1609",
 
-  "yellow-50": "#F8F2E3",
-  "yellow-100": "#F2E6C7",
-  "yellow-200": "#EDD18A",
-  "yellow-300": "#EBBF50",
-  "yellow-400": "#F0B622",
-  "yellow-500": "#D29C11",
-  "yellow-800": "#2F2611",
+  "yellow-50": "#DEFF00",
+  "yellow-100": "#deff00",
+  "yellow-200": "#DEFF00",
+  "yellow-300": "#DEFF00",
+  "yellow-400": "rgb(200, 230, 0)",
+  "yellow-500": "rgb(150, 180, 0)",
+  "yellow-800": "rgb(120, 150, 0)",
 
   white: "#FEFEFE",
 
   "gray-10": "#F6F6F9",
   "gray-50": "#F2F2F6",
   "gray-100": "#DCDCE3",
-  "gray-200": "#ABABB5",
+  "gray-200": "#bebebe",
   "gray-300": "#72747B",
   "gray-400": "#404045",
   "gray-450": "#353539",
@@ -78,8 +78,10 @@ export const ColorPalette = {
   "gray-600": "#1D1D1F",
   "gray-650": "#151517",
   "gray-700": "#09090A",
+  "gray-950": "#231F20",
 
   black: "#020202",
+  "secondary-background": "#231F20",
 
   transparent: "rgba(255,255,255,0)",
 

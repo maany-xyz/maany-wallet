@@ -18,7 +18,7 @@
     "version": "zx ./scripts/lerna-lifecyle-version.mjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "chromatic --project-token=${CHROMATIC_PROJECT_TOKEN}"
+    "chromatic": "chromatic --project-token=chpt_a8c63c92634f0b7"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^1.10.3",

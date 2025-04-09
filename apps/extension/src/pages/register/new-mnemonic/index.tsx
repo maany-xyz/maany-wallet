@@ -2,7 +2,6 @@ import React, {
   FunctionComponent,
   PropsWithChildren,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import { RegisterSceneBox } from "../components/register-scene-box";
@@ -22,15 +21,12 @@ import { Box } from "../../../components/box";
 import { Mnemonic } from "@keplr-wallet/crypto";
 import { SetBip44PathCard, useBIP44PathState } from "../components/bip-44-path";
 import { observer } from "mobx-react-lite";
-import lottie from "lottie-web";
-import AnimSeed from "../../../public/assets/lottie/register/seed.json";
 import { useRegisterHeader } from "../components/header";
 import { HorizontalRadioGroup } from "../../../components/radio-group";
 import { VerticalCollapseTransition } from "../../../components/transition/vertical-collapse";
 import { WarningBox } from "../../../components/warning-box";
 import { CopyToClipboard } from "../components/copy-to-clipboard";
 import { useIntl } from "react-intl";
-import { useTheme } from "styled-components";
 
 type WordsType = "12words" | "24words";
 
@@ -48,24 +44,6 @@ export const NewMnemonicScene: FunctionComponent = observer(() => {
       });
     },
   });
-
-  const seedAnimDivRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (seedAnimDivRef.current) {
-      const anim = lottie.loadAnimation({
-        container: seedAnimDivRef.current,
-        renderer: "svg",
-        loop: true,
-        autoplay: true,
-        animationData: AnimSeed,
-      });
-
-      return () => {
-        anim.destroy();
-      };
-    }
-  }, []);
 
   const [policyDelayRemaining, setPolicyDelayRemaining] = useState(3000);
   const [policyVerified, setPolicyVerified] = useState(false);
@@ -114,14 +92,16 @@ export const NewMnemonicScene: FunctionComponent = observer(() => {
   const [isBIP44CardOpen, setIsBIP44CardOpen] = useState(false);
 
   return (
-    <RegisterSceneBox>
+    <RegisterSceneBox
+      style={{
+        marginTop: "1rem",
+      }}
+      paddingX={"2rem"}
+    >
       <Box position="relative">
         {!policyVerified ? (
           <BlurBackdrop>
-            <div
-              style={{ width: "10rem", height: "10rem" }}
-              ref={seedAnimDivRef}
-            />
+            <div style={{ width: "10rem", height: "10rem" }} />
           </BlurBackdrop>
         ) : null}
         <Box alignX="center">
@@ -171,43 +151,38 @@ export const NewMnemonicScene: FunctionComponent = observer(() => {
       </Box>
 
       <Box>
-        <WarningBox
-          title={intl.formatMessage({
-            id: "pages.register.new-mnemonic.recovery-warning-box-title",
-          })}
-          paragraph={intl.formatMessage({
-            id: "pages.register.new-mnemonic.recovery-warning-box-paragraph",
-          })}
-        />
+        <Box
+          style={{
+            gap: "1.5rem",
+            marginTop: "1.5rem",
+          }}
+        >
+          <WarningBox
+            title={intl.formatMessage({
+              id: "pages.register.new-mnemonic.recovery-warning-box-title",
+            })}
+            paragraph={intl.formatMessage({
+              id: "pages.register.new-mnemonic.recovery-warning-box-paragraph",
+            })}
+            hideInformationIcon
+            padding={"0rem"}
+          />
 
-        <WarningBox
-          title={intl.formatMessage({
-            id: "pages.register.new-mnemonic.back-up-warning-box-title",
-          })}
-          paragraph={intl.formatMessage({
-            id: "pages.register.new-mnemonic.back-up-warning-box-paragraph",
-          })}
-        />
-      </Box>
+          <WarningBox
+            hideInformationIcon
+            title={intl.formatMessage({
+              id: "pages.register.new-mnemonic.back-up-warning-box-title",
+            })}
+            paragraph={intl.formatMessage({
+              id: "pages.register.new-mnemonic.back-up-warning-box-paragraph",
+            })}
+            padding={"0rem"}
+          />
+        </Box>
 
-      <Gutter size="1.5rem" />
+        <Gutter size="1rem" />
 
-      <Box width="27.25rem" marginX="auto">
-        <VerticalCollapseTransition width="100%" collapsed={isBIP44CardOpen}>
-          <Box alignX="center">
-            <Button
-              size="small"
-              color="secondary"
-              text={intl.formatMessage({
-                id: "button.advanced",
-              })}
-              disabled={!policyVerified}
-              onClick={() => {
-                setIsBIP44CardOpen(true);
-              }}
-            />
-          </Box>
-        </VerticalCollapseTransition>
+        {/*<Box width="27.25rem" marginX="auto">*/}
         <VerticalCollapseTransition collapsed={!isBIP44CardOpen}>
           <SetBip44PathCard
             state={bip44PathState}
@@ -216,6 +191,7 @@ export const NewMnemonicScene: FunctionComponent = observer(() => {
             }}
           />
         </VerticalCollapseTransition>
+        {/*</Box>*/}
       </Box>
       <Gutter size="1.25rem" />
       <Box width="22.5rem" marginX="auto">
@@ -258,19 +234,15 @@ export const NewMnemonicScene: FunctionComponent = observer(() => {
 });
 
 const BlurBackdrop: FunctionComponent<PropsWithChildren> = ({ children }) => {
-  const theme = useTheme();
-
   return (
     <div
       style={{
         position: "absolute",
         top: "-1.625rem",
         bottom: 0,
-        left: "-1rem",
-        right: "-1rem",
-        backgroundImage: `url(${require(theme.mode === "light"
-          ? "../../../public/assets/img/register-new-recovery-phrase-blur-light.png"
-          : "../../../public/assets/img/register-new-recovery-phrase-blur.png")})`,
+        left: "0rem",
+        right: "0rem",
+        backgroundImage: `url(${require("../../../public/assets/img/register-new-recovery-phrase-blur.png")})`,
         backgroundSize: "cover",
         borderRadius: "1rem",
         zIndex: 1000,

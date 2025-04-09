@@ -17,7 +17,6 @@ import TransportWebUSB from "@ledgerhq/hw-transport-webusb";
 import { observer } from "mobx-react-lite";
 import Transport from "@ledgerhq/hw-transport";
 import { useStore } from "../../../stores";
-import { useNavigate } from "react-router";
 import Eth from "@ledgerhq/hw-app-eth";
 import { LedgerError, StarknetClient } from "@ledgerhq/hw-app-starknet";
 import { Buffer } from "buffer/";
@@ -116,7 +115,6 @@ export const ConnectLedgerScene: FunctionComponent<{
 
     const { chainStore, keyRingStore, uiConfigStore } = useStore();
 
-    const navigate = useNavigate();
     const confirm = useConfirm();
 
     const [step, setStep] = useState<Step>("unknown");
@@ -189,9 +187,7 @@ export const ConnectLedgerScene: FunctionComponent<{
               await chainStore.enableChainInfoInUI(
                 ...appendModeInfo.afterEnableChains
               );
-              navigate("/welcome", {
-                replace: true,
-              });
+              sceneTransition.push("welcome-to-maany");
             } else {
               if (isStepMode) {
                 sceneTransition.replaceAll("finalize-key", {
@@ -353,9 +349,7 @@ export const ConnectLedgerScene: FunctionComponent<{
                 );
 
                 if (isStepMode) {
-                  navigate("/welcome", {
-                    replace: true,
-                  });
+                  sceneTransition.push("welcome-to-maany");
                 } else {
                   window.close();
                 }
