@@ -52,12 +52,7 @@ const Styles = {
     disabled?: boolean;
     isNotReady?: boolean;
   }>`
-    background-color: ${(props) =>
-      props.theme.mode === "light"
-        ? props.isNotReady
-          ? ColorPalette["skeleton-layer-0"]
-          : ColorPalette.white
-        : ColorPalette["gray-650"]};
+    background-color: transparent;
     padding ${({ forChange }) =>
       forChange ? "0.875rem 0.25rem 0.875rem 1rem" : "1rem 0.875rem"};
     border-radius: 0.375rem;
@@ -290,7 +285,7 @@ export const TokenItem: FunctionComponent<TokenItemProps> = observer(
             <CurrencyImageFallback
               chainInfo={viewToken.chainInfo}
               currency={viewToken.token.currency}
-              size="2rem"
+              size="3rem"
             />
           </Skeleton>
 
@@ -310,10 +305,13 @@ export const TokenItem: FunctionComponent<TokenItemProps> = observer(
                       : ColorPalette["gray-10"]
                   }
                   style={{
+                    fontSize: "20px",
                     wordBreak: "break-all",
                   }}
                 >
-                  {coinDenom}
+                  {isIBC
+                    ? `on ${viewToken.chainInfo.chainName}`
+                    : viewToken.chainInfo.chainName}
                 </Subtitle2>
               </Skeleton>
 
@@ -377,10 +375,10 @@ export const TokenItem: FunctionComponent<TokenItemProps> = observer(
                 isNotReady={isNotReady}
                 dummyMinWidth="4.5rem"
               >
-                <Caption1 style={{ color: ColorPalette["gray-300"] }}>
-                  {isIBC
-                    ? `on ${viewToken.chainInfo.chainName}`
-                    : viewToken.chainInfo.chainName}
+                <Caption1
+                  style={{ color: ColorPalette["gray-200"], fontSize: "16px" }}
+                >
+                  {coinDenom}
                 </Caption1>
               </Skeleton>
 

@@ -189,6 +189,59 @@ const buttonStyleFromColorAndMode: Record<
       },
     },
   },
+  neutral: {
+    light: {
+      fill: {
+        enabled: css`
+          background-color: ${ColorPalette["blue-50"]};
+
+          ${makeTextAndSvgColor(ColorPalette["blue-400"])}
+
+          :hover {
+            ::after {
+              background-color: ${ColorPalette["gray-500"]};
+              opacity: 0.02;
+            }
+          }
+        `,
+
+        disabled: css`
+          background-color: ${ColorPalette["blue-50"]};
+
+          ${makeTextAndSvgColor(ColorPalette["blue-200"])}
+        `,
+      },
+    },
+    dark: {
+      fill: {
+        enabled: css`
+          background-color: ${ColorPalette["gray-950"]};
+
+          ${makeTextAndSvgColor(ColorPalette["gray-200"])}
+          // Remove normalized css properties.
+          :hover {
+            ::after {
+              background-color: ${ColorPalette["gray-600"]};
+              opacity: 0.2;
+            }
+          }
+        `,
+
+        disabled: css`
+          background-color: ${ColorPalette["gray-950"]};
+
+          ${makeTextAndSvgColor(ColorPalette["gray-400"])}
+
+          ::after {
+            background-color: ${ColorPalette["gray-600"]};
+            opacity: 0.7;
+          }
+
+          ${makeTextAndSvgColor(ColorPalette["white"])}
+        `,
+      },
+    },
+  },
   danger: {
     light: {
       fill: {

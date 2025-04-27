@@ -27,7 +27,6 @@ import { Tooltip } from "../../../../components/tooltip";
 import { Skeleton } from "../../../../components/skeleton";
 import { XAxis, YAxis } from "../../../../components/axis";
 import Color from "color";
-import { SpecialButton } from "../../../../components/special-button";
 import { FormattedMessage, useIntl } from "react-intl";
 import { CurrencyImageFallback } from "../../../../components/image";
 import {
@@ -64,18 +63,13 @@ interface ViewClaimToken extends Omit<ViewToken, "chainInfo"> {
 
 const Styles = {
   Container: styled.div<{ isNotReady?: boolean }>`
-    background-color: ${(props) =>
-      props.theme.mode === "light"
-        ? props.isNotReady
-          ? ColorPalette["skeleton-layer-0"]
-          : ColorPalette.white
-        : ColorPalette["gray-650"]};
+    background-color: ${ColorPalette["gray-950"]};
 
     box-shadow: ${(props) =>
       props.theme.mode === "light" && !props.isNotReady
         ? "0px 1px 4px 0px rgba(43, 39, 55, 0.10)"
         : "none"};
-    padding: 0.75rem 0 0 0;
+    padding: 0.75rem 0 0.5rem 0;
     border-radius: 0.375rem;
   `,
   ExpandButton: styled(Box)<{ viewTokenCount: number }>`
@@ -152,7 +146,6 @@ export const ClaimAll: FunctionComponent<{ isNotReady?: boolean }> = observer(
       uiConfigStore,
     } = useStore();
     const intl = useIntl();
-    const theme = useTheme();
 
     const [isExpanded, setIsExpanded] = useState(false);
     const { states, getClaimAllEachState } = useClaimAllEachState();
@@ -386,10 +379,7 @@ export const ClaimAll: FunctionComponent<{ isNotReady?: boolean }> = observer(
                 >
                   <Subtitle2
                     style={{
-                      color:
-                        theme.mode === "light"
-                          ? ColorPalette["gray-700"]
-                          : ColorPalette["gray-10"],
+                      color: ColorPalette["gray-200"],
                     }}
                   >
                     {uiConfigStore.hideStringIfPrivacyMode(
@@ -404,60 +394,46 @@ export const ClaimAll: FunctionComponent<{ isNotReady?: boolean }> = observer(
             <Column weight={1} />
 
             <Skeleton type="button" layer={1} isNotReady={isNotReady}>
-              {/*
-                 ledger일 경우 특수한 행동을 하진 못하고 그냥 collapse를 펼치기만 한다.
-                 특수한 기능이 없다는 것을 암시하기 위해서 ledger일때는 일반 버튼으로 처리한다.
-               */}
-              {isLedger || isKeystone ? (
-                <Button
-                  text={intl.formatMessage({
-                    id: "page.main.components.claim-all.button",
-                  })}
-                  size="small"
-                  isLoading={claimAllIsLoading}
-                  disabled={claimAllDisabled}
-                  onClick={claimAll}
-                />
-              ) : (
-                <SpecialButton
-                  text={intl.formatMessage({
-                    id: "page.main.components.claim-all.button",
-                  })}
-                  size="small"
-                  isLoading={claimAllIsLoading}
-                  disabled={claimAllDisabled}
-                  onClick={claimAll}
-                />
-              )}
+              <Button
+                text={intl.formatMessage({
+                  id: "page.main.components.claim-all.button",
+                })}
+                color={"primary"}
+                style={{ minWidth: "85px", minHeight: "52px" }}
+                disabled={claimAllDisabled}
+                onClick={claimAll}
+              />
             </Skeleton>
           </Columns>
         </Box>
-
-        <Styles.ExpandButton
-          paddingX="0.125rem"
-          alignX="center"
-          viewTokenCount={viewClaimTokens.length}
-          onClick={() => {
-            analyticsStore.logEvent("click_claimExpandButton");
-            if (viewClaimTokens.length > 0) {
-              setIsExpanded(!isExpanded);
-            }
-          }}
-        >
-          <Box
-            style={{
-              opacity: isNotReady ? 0 : 1,
+        {/* todo: investigation the usage*/}
+        {false && (
+          <Styles.ExpandButton
+            paddingX="0.125rem"
+            alignX="center"
+            viewTokenCount={viewClaimTokens.length}
+            onClick={() => {
+              analyticsStore.logEvent("click_claimExpandButton");
+              if (viewClaimTokens.length > 0) {
+                setIsExpanded(!isExpanded);
+              }
             }}
           >
-            <animated.div style={arrowAnimation}>
-              <ArrowDownIcon
-                width="1.25rem"
-                height="1.25rem"
-                color={ColorPalette["gray-300"]}
-              />
-            </animated.div>
-          </Box>
-        </Styles.ExpandButton>
+            <Box
+              style={{
+                opacity: isNotReady ? 0 : 1,
+              }}
+            >
+              <animated.div style={arrowAnimation}>
+                <ArrowDownIcon
+                  width="1.25rem"
+                  height="1.25rem"
+                  color={ColorPalette["gray-300"]}
+                />
+              </animated.div>
+            </Box>
+          </Styles.ExpandButton>
+        )}
 
         <VerticalCollapseTransition
           collapsed={!isExpanded}

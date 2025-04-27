@@ -11,22 +11,19 @@ export const LayeredStyles = {
     align-items: center;
     justify-content: center;
 
-    background-color: ${(props) =>
-      props.theme.mode === "light"
-        ? ColorPalette.white
-        : ColorPalette["gray-600"]};
+    background-color: ${ColorPalette["black"]};
+    border-width: 2px;
+    border-style: solid;
+    border-color: ${ColorPalette["gray-950"]};
 
-    box-shadow: ${(props) =>
-      props.theme.mode === "light" && !props.isNotReady
-        ? "0px 1px 4px 0px rgba(43, 39, 55, 0.10)"
-        : "none"};
+    box-shadow: none;
 
     ${({ size }) => {
       switch (size) {
         case "large": {
           return css`
-            height: 2.375rem;
-            border-radius: 1.1875rem;
+            height: 3rem;
+            border-radius: 2rem;
             padding: 0 0.15625rem;
           `;
         }
@@ -60,11 +57,7 @@ export const LayeredStyles = {
             right: 0;
 
             border-radius: 999999px;
-            background-color: ${(props) => {
-              return props.theme.mode === "light"
-                ? ColorPalette["skeleton-layer-1"]
-                : ColorPalette["gray-500"];
-            }};
+            background-color: ${ColorPalette["gray-950"]};
 
             z-index: 999999;
           }
@@ -84,23 +77,13 @@ export const LayeredStyles = {
       if (selected) {
         return css`
           cursor: auto;
-          background-color: ${(props) =>
-            props.theme.mode === "light"
-              ? ColorPalette["blue-50"]
-              : ColorPalette["gray-400"]};
-          color: ${(props) =>
-            props.theme.mode === "light"
-              ? ColorPalette["blue-400"]
-              : ColorPalette.white};
-          font-weight: 500;
+          background-color: ${ColorPalette["gray-950"]};
+          color: ${ColorPalette.white};
         `;
       }
       return css`
         cursor: pointer;
-        background-color: ${(props) =>
-          props.theme.mode === "light"
-            ? ColorPalette.white
-            : ColorPalette["gray-600"]};
+        background-color: ${ColorPalette["black"]};
         color: ${ColorPalette["gray-300"]};
         font-weight: 400;
       `;
@@ -110,9 +93,9 @@ export const LayeredStyles = {
       switch (size) {
         case "large": {
           return css`
-            height: 2.0625rem;
-            border-radius: 1.03125rem;
-            font-size: 0.75rem;
+            height: 2.5rem;
+            border-radius: 1.25rem;
+            font-size: 16px;
 
             padding: 0 0.625rem;
           `;

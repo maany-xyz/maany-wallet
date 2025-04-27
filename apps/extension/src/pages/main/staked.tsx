@@ -5,9 +5,6 @@ import { Dec } from "@keplr-wallet/unit";
 import { observer } from "mobx-react-lite";
 import { Stack } from "../../components/stack";
 import { useStore } from "../../stores";
-import { TextButton } from "../../components/button-text";
-import { ArrowRightSolidIcon } from "../../components/icon";
-import { ColorPalette } from "../../styles";
 import { useIntl } from "react-intl";
 import { ViewStakedToken, ViewUnbondingToken } from "../../stores/huge-queries";
 
@@ -158,7 +155,7 @@ export const StakedTabView: FunctionComponent<{
         <MainEmptyView
           image={
             <img
-              src={require("../../public/assets/img/main-empty-staking.png")}
+              src={require("../../public/assets/img/plentyEmpty.png")}
               style={{
                 width: "6.25rem",
                 height: "6.25rem",
@@ -172,28 +169,7 @@ export const StakedTabView: FunctionComponent<{
           paragraph={intl.formatMessage({
             id: "page.main.staked.empty-view-paragraph",
           })}
-          button={
-            <TextButton
-              text={intl.formatMessage({
-                id: "page.main.staked.go-to-dashboard-button",
-              })}
-              size="small"
-              right={
-                <ArrowRightSolidIcon
-                  width="1.125rem"
-                  height="1.125rem"
-                  color={ColorPalette["gray-10"]}
-                />
-              }
-              onClick={async () => {
-                await browser.tabs.create({
-                  url: "https://wallet.keplr.app/?modal=staking&utm_source=keplrextension&utm_medium=button&utm_campaign=permanent&utm_content=manage_stake",
-                });
-
-                close();
-              }}
-            />
-          }
+          button={<div />}
         />
       ) : null}
     </React.Fragment>

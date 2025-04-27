@@ -4,6 +4,7 @@ import { ColorPalette } from "../../../../styles";
 import { animated, to, useSpringValue } from "@react-spring/web";
 import { defaultSpringConfig } from "../../../../styles/spring";
 import { useTheme } from "styled-components";
+import { Box } from "../../../../components/box";
 
 export const DualChart: FunctionComponent<{
   first: {
@@ -138,6 +139,7 @@ export const DualChart: FunctionComponent<{
     secondArcVisibility,
     startAngle,
   ]);
+  return <Box height={"8.375rem"} width={"1rem"} />;
 
   return (
     <YAxis alignX="center">

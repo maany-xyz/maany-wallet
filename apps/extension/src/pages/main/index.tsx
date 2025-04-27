@@ -10,21 +10,16 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../stores";
 import {
   Buttons,
-  ClaimAll,
   CopyAddress,
   IBCTransferView,
   BuyCryptoModal,
-  StakeWithKeplrDashboardButton,
   UpdateNoteModal,
   UpdateNotePageData,
+  ClaimAll,
 } from "./components";
 import { Stack } from "../../components/stack";
 import { CoinPretty, PricePretty } from "@keplr-wallet/unit";
-import {
-  ArrowTopRightOnSquareIcon,
-  EyeIcon,
-  EyeSlashIcon,
-} from "../../components/icon";
+import { EyeIcon, EyeSlashIcon } from "../../components/icon";
 import { Box } from "../../components/box";
 import { Modal } from "../../components/modal";
 import { DualChart } from "./components/chart";
@@ -33,12 +28,11 @@ import { H1, Subtitle3, Subtitle4 } from "../../components/typography";
 import { ColorPalette, SidePanelMaxWidth } from "../../styles";
 import { AvailableTabView } from "./available";
 import { StakedTabView } from "./staked";
-import { SearchTextInput } from "../../components/input";
 import { animated, useSpringValue, easings } from "@react-spring/web";
 import { defaultSpringConfig } from "../../styles/spring";
 import { IChainInfoImpl, QueryError } from "@keplr-wallet/stores";
 import { Skeleton } from "../../components/skeleton";
-import { FormattedMessage, useIntl } from "react-intl";
+import { useIntl } from "react-intl";
 import { useGlobarSimpleBar } from "../../hooks/global-simplebar";
 import styled, { useTheme } from "styled-components";
 import { IbcHistoryView } from "./components/ibc-history-view";
@@ -58,6 +52,8 @@ import { BottomTabsHeightRem } from "../../bottom-tabs";
 import { DenomHelper } from "@keplr-wallet/common";
 import { NewSidePanelHeaderTop } from "./new-side-panel-header-top";
 import { ModularChainInfo } from "@keplr-wallet/types";
+import { Column, Columns } from "../../components/column";
+import { Button } from "../../components/button";
 
 export interface ViewToken {
   token: CoinPretty;
@@ -267,7 +263,7 @@ export const MainPage: FunctionComponent<{
 
   const searchRef = useRef<HTMLInputElement | null>(null);
   const [search, setSearch] = useState("");
-  const [isEnteredSearch, setIsEnteredSearch] = useState(false);
+
   useEffect(() => {
     // Give focus whenever available tab is selected.
     if (!isNotReady && tabStatus === "available") {
@@ -281,33 +277,7 @@ export const MainPage: FunctionComponent<{
       }
     }
   }, [tabStatus, isNotReady]);
-  useEffect(() => {
-    // Log if a search term is entered at least once.
-    if (isEnteredSearch) {
-      analyticsStore.logEvent("input_searchAssetOrChain", {
-        pageName: "main",
-      });
-    }
-  }, [analyticsStore, isEnteredSearch]);
-  useEffect(() => {
-    // Log a search term with delay.
-    const handler = setTimeout(() => {
-      if (isEnteredSearch && search) {
-        analyticsStore.logEvent("input_searchAssetOrChain", {
-          inputValue: search,
-          pageName: "main",
-        });
-      }
-    }, 1000);
 
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [analyticsStore, search, isEnteredSearch]);
-
-  const searchScrollAnim = useSpringValue(0, {
-    config: defaultSpringConfig,
-  });
   const globalSimpleBar = useGlobarSimpleBar();
 
   const animatedPrivacyModeHover = useSpringValue(0, {
@@ -421,8 +391,16 @@ export const MainPage: FunctionComponent<{
       />
       <Box paddingX="0.75rem" paddingBottom="1.5rem">
         <Stack gutter="0.75rem">
+          <CopyAddress
+            onClick={() => {
+              analyticsStore.logEvent("click_copyAddress");
+              setIsOpenDepositModal(true);
+            }}
+            isNotReady={isNotReady}
+          />
           <YAxis alignX="center">
             <LayeredHorizontalRadioGroup
+              size={"large"}
               items={[
                 {
                   key: "available",
@@ -445,17 +423,11 @@ export const MainPage: FunctionComponent<{
 
                 setTabStatus(key as TabStatus);
               }}
-              itemMinWidth="5.75rem"
+              itemMinWidth="45vw"
               isNotReady={isNotReady}
             />
           </YAxis>
-          <CopyAddress
-            onClick={() => {
-              analyticsStore.logEvent("click_copyAddress");
-              setIsOpenDepositModal(true);
-            }}
-            isNotReady={isNotReady}
-          />
+
           <Box position="relative">
             <DualChart
               first={{
@@ -483,6 +455,7 @@ export const MainPage: FunctionComponent<{
             >
               <Gutter size="2rem" />
               <Box
+                marginBottom={"2rem"}
                 alignX={isNotReady ? "center" : undefined}
                 onHoverStateChange={(isHover) => {
                   if (!isNotReady) {
@@ -492,6 +465,26 @@ export const MainPage: FunctionComponent<{
                   }
                 }}
               >
+                <Skeleton isNotReady={isNotReady} dummyMinWidth="8.125rem">
+                  <H1
+                    style={{
+                      fontSize: "48px",
+                      color:
+                        theme.mode === "light"
+                          ? ColorPalette["gray-700"]
+                          : ColorPalette["gray-10"],
+                      textAlign: "center",
+                    }}
+                  >
+                    {uiConfigStore.hideStringIfPrivacyMode(
+                      tabStatus === "available"
+                        ? availableTotalPrice?.toString() || "-"
+                        : stakedTotalPrice?.toString() || "-",
+                      4
+                    )}
+                  </H1>
+                </Skeleton>
+                <Gutter size="0.5rem" />
                 <Skeleton isNotReady={isNotReady}>
                   <YAxis alignX="center">
                     <XAxis alignY="center">
@@ -548,25 +541,6 @@ export const MainPage: FunctionComponent<{
                     </XAxis>
                   </YAxis>
                 </Skeleton>
-                <Gutter size="0.5rem" />
-                <Skeleton isNotReady={isNotReady} dummyMinWidth="8.125rem">
-                  <H1
-                    style={{
-                      color:
-                        theme.mode === "light"
-                          ? ColorPalette["gray-700"]
-                          : ColorPalette["gray-10"],
-                      textAlign: "center",
-                    }}
-                  >
-                    {uiConfigStore.hideStringIfPrivacyMode(
-                      tabStatus === "available"
-                        ? availableTotalPrice?.toString() || "-"
-                        : stakedTotalPrice?.toString() || "-",
-                      4
-                    )}
-                  </H1>
-                </Skeleton>
               </Box>
             </Box>
           </Box>
@@ -581,103 +555,52 @@ export const MainPage: FunctionComponent<{
             />
           ) : null}
 
-          {tabStatus === "staked" && !isNotReady ? (
-            <StakeWithKeplrDashboardButton
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                analyticsStore.logEvent("click_keplrDashboard", {
-                  tabName: tabStatus,
-                });
-
-                browser.tabs.create({
-                  url: "https://wallet.keplr.app/?modal=staking&utm_source=keplrextension&utm_medium=button&utm_campaign=permanent&utm_content=manage_stake",
-                });
-              }}
-            >
-              <FormattedMessage id="page.main.chart.stake-with-keplr-dashboard-button" />
-              <Box color={ColorPalette["gray-300"]} marginLeft="0.5rem">
-                <ArrowTopRightOnSquareIcon width="1rem" height="1rem" />
-              </Box>
-            </StakeWithKeplrDashboardButton>
+          {tabStatus === "staked" ? (
+            <Columns sum={2} gutter={"1rem"}>
+              <Column weight={1}>
+                <Button
+                  text={intl.formatMessage({
+                    id: "page.main.components.buttons.deposit-button",
+                  })}
+                  color="neutral"
+                  onClick={() => {
+                    setIsOpenDepositModal(true);
+                    analyticsStore.logEvent("click_deposit");
+                  }}
+                />
+              </Column>
+              <Column weight={1}>
+                <Button
+                  text={intl.formatMessage({
+                    id: "Stake",
+                  })}
+                  color="primary"
+                  onClick={() => setIsOpenBuy(true)}
+                />
+              </Column>
+            </Columns>
           ) : null}
 
-          <ClaimAll isNotReady={isNotReady} />
+          {/*
+            It is difficult to handle the gutter here because `IbcHistoryView` itself renders a list.
+            Therefore, the gutter should be handled within `IbcHistoryView`.
+          */}
+          <Gutter size={"1rem"} />
+
+          {/* A component to collect claimable amounts*/}
+          {tabStatus === "staked" ? <ClaimAll isNotReady={isNotReady} /> : null}
 
           <IbcHistoryView isNotReady={isNotReady} />
           {/*
-            IbcHistoryView 자체가 list를 그리기 때문에 여기서 gutter를 처리하기는 힘들다.
-            그러므로 IbcHistoryView에서 gutter를 처리하도록 한다.
+            It is difficult to handle the gutter here because `IbcHistoryView` itself renders a list.
+            Therefore, the gutter should be handled within `IbcHistoryView`.
           */}
           <Gutter size="0" />
 
-          {tabStatus === "available" && !isNotReady ? (
-            <StakeWithKeplrDashboardButton
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                analyticsStore.logEvent("click_keplrDashboard", {
-                  tabName: tabStatus,
-                });
-
-                browser.tabs.create({
-                  url: "https://wallet.keplr.app/?utm_source=keplrextension&utm_medium=button&utm_campaign=permanent&utm_content=manage_portfolio",
-                });
-              }}
-            >
-              <FormattedMessage id="page.main.chart.manage-portfolio-in-keplr-dashboard" />
-              <Box color={ColorPalette["gray-300"]} marginLeft="0.5rem">
-                <ArrowTopRightOnSquareIcon width="1rem" height="1rem" />
-              </Box>
-            </StakeWithKeplrDashboardButton>
-          ) : null}
-          {!isNotReady ? (
-            <Stack gutter="0.75rem">
-              {tabStatus === "available" ? (
-                <SearchTextInput
-                  ref={searchRef}
-                  value={search}
-                  onChange={(e) => {
-                    e.preventDefault();
-
-                    setSearch(e.target.value);
-
-                    if (e.target.value.trim().length > 0) {
-                      if (!isEnteredSearch) {
-                        setIsEnteredSearch(true);
-                      }
-
-                      const simpleBarScrollRef =
-                        globalSimpleBar.ref.current?.getScrollElement();
-                      if (
-                        simpleBarScrollRef &&
-                        simpleBarScrollRef.scrollTop < 218
-                      ) {
-                        searchScrollAnim.start(218, {
-                          from: simpleBarScrollRef.scrollTop,
-                          onChange: (anim: any) => {
-                            // XXX: 이거 실제 파라미터랑 타입스크립트 인터페이스가 다르다...???
-                            const v = anim.value != null ? anim.value : anim;
-                            if (typeof v === "number") {
-                              simpleBarScrollRef.scrollTop = v;
-                            }
-                          },
-                        });
-                      }
-                    }
-                  }}
-                  placeholder={intl.formatMessage({
-                    id: "page.main.search-placeholder",
-                  })}
-                />
-              ) : null}
-            </Stack>
-          ) : null}
-
           {/*
-            AvailableTabView, StakedTabView가 컴포넌트로 빠지면서 밑의 얘들의 각각의 item들에는 stack이 안먹힌다는 걸 주의
-            각 컴포넌트에서 알아서 gutter를 처리해야한다.
-           */}
+           Be aware that since AvailableTabView and StakedTabView have been separated into components, the stack does not apply to the items within them.
+           Each component must handle the gutter individually.
+          */}
           {tabStatus === "available" ? (
             <AvailableTabView
               search={search}
@@ -686,10 +609,10 @@ export const MainPage: FunctionComponent<{
                 setIsOpenDepositModal(true);
               }}
               onMoreTokensClosed={() => {
-                // token list가 접히면서 scroll height가 작아지게 된다.
-                // scroll height가 작아지는 것은 위로 스크롤 하는 것과 같은 효과를 내기 때문에
-                // 아래와같은 처리가 없으면 token list를 접으면 refesh 버튼이 무조건 나타나게 된다.
-                // 이게 약간 어색해보이므로 token list를 접을때 1.5초 동안 refresh 버튼 기능을 없애버린다.
+                // When the token list collapses, the scroll height decreases.
+                // A decrease in scroll height has the same effect as scrolling up.
+                // Without the following handling, collapsing the token list would always make the refresh button appear.
+                // This might look slightly awkward, so the refresh button functionality is disabled for 1.5 seconds when the token list collapses.
                 forcePreventScrollRefreshButtonVisible.current = true;
                 setTimeout(() => {
                   forcePreventScrollRefreshButtonVisible.current = false;
