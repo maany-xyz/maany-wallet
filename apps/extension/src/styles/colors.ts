@@ -79,6 +79,7 @@ export const ColorPalette = {
   "gray-650": "#151517",
   "gray-700": "#09090A",
   "gray-950": "#231F20",
+  "slate-bg-blur": "rgba(23,23,23,0.7)",
 
   black: "#020202",
   "secondary-background": "#231F20",

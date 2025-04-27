@@ -2,17 +2,16 @@ import React, { FunctionComponent, PropsWithChildren } from "react";
 import { GlobalSimpleBarProvider } from "./hooks/global-simplebar";
 import { Link, useLocation } from "react-router-dom";
 import { ColorPalette } from "./styles";
-import { useTheme } from "styled-components";
 import { YAxis } from "./components/axis";
-import { Caption2 } from "./components/typography";
+import { Caption3 } from "./components/typography";
 import { Box } from "./components/box";
 
-export const BottomTabsHeightRem = "3.75rem";
+export const BottomTabsHeightRem = "4.25rem";
 
-// XXX: Tab 아이콘을 활성 상태에 따라 바꾸려고 쓰임.
-//      여기서 Context API를 쓰는게 에바인 것 같기는 한데
-//      원래는 active state에 따라서 아이콘이 변하는 디자인이 아니였는데
-//      나중에 바뀜에 따라서 기능을 추가해야하는데 귀찮아서 이렇게 처리함.
+// XXX: Used to change the tab icon depending on the active state.
+//      Using the Context API here seems overkill.
+//      Originally, the design did not require icons to change based on the active state.
+//      However, the design was later changed, and this functionality had to be added, so it was handled this way.
 const BottomTabActiveStateContext = React.createContext<{
   isActive: boolean;
 } | null>(null);
@@ -31,8 +30,6 @@ export const BottomTabsRouteProvider: FunctionComponent<
   }>
 > = ({ children, isNotReady, tabs, forceHideBottomTabs }) => {
   const location = useLocation();
-
-  const theme = useTheme();
 
   const shouldBottomTabsShown =
     !forceHideBottomTabs &&
@@ -60,22 +57,13 @@ export const BottomTabsRouteProvider: FunctionComponent<
         <div
           style={{
             height: BottomTabsHeightRem,
-            backgroundColor:
-              theme.mode === "light"
-                ? ColorPalette["white"]
-                : ColorPalette["gray-700"],
-            borderTopStyle: "solid",
-            borderTopWidth: "1px",
-            borderTopColor:
-              theme.mode === "light"
-                ? ColorPalette["gray-100"]
-                : ColorPalette["gray-600"],
-
+            backgroundColor: ColorPalette["slate-bg-blur"],
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-evenly",
-
+            justifyContent: "space-around",
+            backdropFilter: "blur(10px)",
+            paddingBottom: "0.5rem",
             zIndex: 999999,
           }}
         >
@@ -86,7 +74,8 @@ export const BottomTabsRouteProvider: FunctionComponent<
               <Box
                 key={i}
                 style={{
-                  // text의 길이와 상관없이 모든 tab이 균등하게 나눠져야 하므로 상위에 width: 1px를 주는 trick을 사용한다.
+                  // To ensure that all tabs are evenly distributed regardless of the text length,
+                  // a trick is used by setting the width of the parent element to 1px.
                   width: "1px",
                 }}
               >
@@ -104,17 +93,9 @@ export const BottomTabsRouteProvider: FunctionComponent<
                       alignItems: "center",
                       justifyContent: "center",
                       opacity: isNotReady ? 0 : 1,
-                      color: (() => {
-                        if (theme.mode === "light") {
-                          return isActive
-                            ? ColorPalette["blue-400"]
-                            : ColorPalette["gray-100"];
-                        }
-
-                        return isActive
-                          ? ColorPalette["white"]
-                          : ColorPalette["gray-400"];
-                      })(),
+                      color: isActive
+                        ? ColorPalette["yellow-300"]
+                        : ColorPalette["white"],
                     }}
                   >
                     <div
@@ -131,26 +112,21 @@ export const BottomTabsRouteProvider: FunctionComponent<
                         }}
                       >
                         <Box>{tab.icon}</Box>
-                        <Caption2
+                        <Caption3
                           style={{
+                            marginTop: "4px",
                             textDecoration: "none",
                             whiteSpace: "nowrap",
                             wordBreak: "keep-all",
                           }}
-                          color={(() => {
-                            if (theme.mode === "light") {
-                              return isActive
-                                ? ColorPalette["blue-400"]
-                                : ColorPalette["gray-200"];
-                            }
-
-                            return isActive
-                              ? ColorPalette["white"]
-                              : ColorPalette["gray-300"];
-                          })()}
+                          color={
+                            isActive
+                              ? ColorPalette["yellow-300"]
+                              : ColorPalette["white"]
+                          }
                         >
                           {tab.text}
-                        </Caption2>
+                        </Caption3>
                       </BottomTabActiveStateContext.Provider>
                     </YAxis>
                   </div>
@@ -164,50 +140,76 @@ export const BottomTabsRouteProvider: FunctionComponent<
   );
 };
 
-const useIsTabActive = () => {
-  const context = React.useContext(BottomTabActiveStateContext);
-  if (context == null) {
-    throw new Error(
-      "useIsTabActive must be used within BottomTabActiveStateContext"
-    );
-  }
-  return context.isActive;
-};
-
 export const BottomTabHomeIcon: FunctionComponent<{
   width: string;
   height: string;
 }> = ({ width, height }) => {
-  const isActive = useIsTabActive();
-
-  return isActive ? (
+  return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
       width={width}
       height={height}
+      viewBox="0 0 29 26"
       fill="none"
-      stroke="none"
-      viewBox="0 0 28 28"
-    >
-      <path
-        fill="currentColor"
-        d="M15.403 3.844a2.1 2.1 0 00-2.807 0l-7.7 6.918a2.1 2.1 0 00-.697 1.561V22.2a2.1 2.1 0 002.1 2.1h2.8a2.1 2.1 0 002.1-2.1v-5.6a.7.7 0 01.7-.7h4.2a.7.7 0 01.7.7v5.6a2.1 2.1 0 002.1 2.1h2.8a2.1 2.1 0 002.1-2.1v-9.877a2.098 2.098 0 00-.696-1.56l-7.7-6.92z"
-      />
-    </svg>
-  ) : (
-    <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      fill="none"
-      stroke="none"
-      viewBox="0 0 28 28"
     >
-      <path
-        stroke="currentColor"
-        strokeWidth="2.2"
-        d="M15.403 3.844a2.1 2.1 0 00-2.807 0l-7.7 6.918a2.1 2.1 0 00-.697 1.561V22.2a2.1 2.1 0 002.1 2.1h2.8a2.1 2.1 0 002.1-2.1v-5.6a.7.7 0 01.7-.7h4.2a.7.7 0 01.7.7v5.6a2.1 2.1 0 002.1 2.1h2.8a2.1 2.1 0 002.1-2.1v-9.877a2.098 2.098 0 00-.696-1.56l-7.7-6.92z"
-      />
+      <g clipPath="url(#clip0_17447_148)">
+        <g clipPath="url(#clip1_17447_148)">
+          <path
+            d="M4.47717 20.4432C6.57447 20.4432 8.27466 18.74 8.27466 16.6391C8.27466 14.5381 6.57447 12.835 4.47717 12.835C2.37988 12.835 0.679688 14.5381 0.679688 16.6391C0.679688 18.74 2.37988 20.4432 4.47717 20.4432Z"
+            fill="currentColor"
+          />
+          <path
+            d="M6.84813 11.3945C8.69402 11.3945 10.1904 9.89545 10.1904 8.04635C10.1904 6.19724 8.69402 4.69824 6.84813 4.69824C5.00225 4.69824 3.50586 6.19724 3.50586 8.04635C3.50586 9.89545 5.00225 11.3945 6.84813 11.3945Z"
+            fill="currentColor"
+          />
+          <path
+            d="M11.1447 25.1838C12.8297 25.1838 14.1956 23.8155 14.1956 22.1275C14.1956 20.4396 12.8297 19.0713 11.1447 19.0713C9.4597 19.0713 8.09375 20.4396 8.09375 22.1275C8.09375 23.8155 9.4597 25.1838 11.1447 25.1838Z"
+            fill="currentColor"
+          />
+          <path
+            d="M13.7645 6.88776C15.3668 6.88776 16.6657 5.58658 16.6657 3.98148C16.6657 2.37638 15.3668 1.0752 13.7645 1.0752C12.1622 1.0752 10.8633 2.37638 10.8633 3.98148C10.8633 5.58658 12.1622 6.88776 13.7645 6.88776Z"
+            fill="currentColor"
+          />
+          <path
+            d="M18.5391 24.106C20.004 24.106 21.1915 22.9164 21.1915 21.449C21.1915 19.9816 20.004 18.792 18.5391 18.792C17.0742 18.792 15.8867 19.9816 15.8867 21.449C15.8867 22.9164 17.0742 24.106 18.5391 24.106Z"
+            fill="currentColor"
+          />
+          <path
+            d="M20.9731 5.8443C22.3195 5.8443 23.411 4.75091 23.411 3.40213C23.411 2.05336 22.3195 0.959961 20.9731 0.959961C19.6266 0.959961 18.5352 2.05336 18.5352 3.40213C18.5352 4.75091 19.6266 5.8443 20.9731 5.8443Z"
+            fill="currentColor"
+          />
+          <path
+            d="M24.0193 20.0296C25.2305 20.0296 26.2124 19.046 26.2124 17.8327C26.2124 16.6193 25.2305 15.6357 24.0193 15.6357C22.8081 15.6357 21.8262 16.6193 21.8262 17.8327C21.8262 19.046 22.8081 20.0296 24.0193 20.0296Z"
+            fill="currentColor"
+          />
+          <path
+            d="M27.0858 14.6226C28.1428 14.6226 28.9997 13.7642 28.9997 12.7053C28.9997 11.6465 28.1428 10.7881 27.0858 10.7881C26.0288 10.7881 25.1719 11.6465 25.1719 12.7053C25.1719 13.7642 26.0288 14.6226 27.0858 14.6226Z"
+            fill="currentColor"
+          />
+          <path
+            d="M25.9279 9.18785C27.0207 9.18785 27.9065 8.30043 27.9065 7.20574C27.9065 6.11105 27.0207 5.22363 25.9279 5.22363C24.8351 5.22363 23.9492 6.11105 23.9492 7.20574C23.9492 8.30043 24.8351 9.18785 25.9279 9.18785Z"
+            fill="currentColor"
+          />
+        </g>
+      </g>
+      <defs>
+        <clipPath id="clip0_17447_148">
+          <rect
+            width="28.3203"
+            height="24.2271"
+            fill="currentColor"
+            transform="translate(0.679688 0.959961)"
+          />
+        </clipPath>
+        <clipPath id="clip1_17447_148">
+          <rect
+            width="28.3203"
+            height="24.2271"
+            fill="currentColor"
+            transform="translate(0.679688 0.959961)"
+          />
+        </clipPath>
+      </defs>
     </svg>
   );
 };
@@ -218,24 +220,16 @@ export const BottomTabSwapIcon: FunctionComponent<{
 }> = ({ width, height }) => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
       width={width}
       height={height}
+      viewBox="0 0 24 25"
       fill="none"
-      stroke="none"
-      viewBox="0 0 28 28"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <g clipPath="url(#clip0_5910_45809)">
-        <path
-          fill="currentColor"
-          d="M7.207 12.929L1 19.214 7.207 25.5v-4.714H18.11v-3.143H7.207v-4.714zM27 9.786L20.793 3.5v4.714H9.89v3.143h10.904v4.714L27 9.786z"
-        />
-      </g>
-      <defs>
-        <clipPath id="clip0_5910_45809">
-          <path fill="#fff" d="M0 0H28V28H0z" transform="translate(0 .5)" />
-        </clipPath>
-      </defs>
+      <path
+        d="M14.3882 23.2671C14.3882 23.8194 13.9405 24.2671 13.3882 24.2671H10.5298C9.9775 24.2671 9.52979 23.8194 9.52979 23.2671V15.7212C9.52979 15.1689 9.08207 14.7212 8.52979 14.7212H1.03272C0.48043 14.7212 0.0327148 14.2735 0.0327148 13.7212V11.0581C0.0327148 10.5058 0.48043 10.0581 1.03271 10.0581H8.52979C9.08207 10.0581 9.52979 9.61039 9.52979 9.05811V1.48779C9.52979 0.935508 9.9775 0.487793 10.5298 0.487793H13.3882C13.9405 0.487793 14.3882 0.935508 14.3882 1.48779V9.05811C14.3882 9.61039 14.8359 10.0581 15.3882 10.0581H22.8608C23.4131 10.0581 23.8608 10.5058 23.8608 11.0581V13.7212C23.8608 14.2735 23.4131 14.7212 22.8608 14.7212H15.3882C14.8359 14.7212 14.3882 15.1689 14.3882 15.7212V23.2671Z"
+        fill="currentColor"
+      />
     </svg>
   );
 };
@@ -244,35 +238,21 @@ export const BottomTabActivityIcon: FunctionComponent<{
   width: string;
   height: string;
 }> = ({ width, height }) => {
-  const isActive = useIsTabActive();
-
-  return isActive ? (
+  return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
       width={width}
       height={height}
+      viewBox="0 0 22 22"
       fill="none"
-      viewBox="0 0 28 28"
+      xmlns="http://www.w3.org/2000/svg"
     >
       <path
+        d="M19.7992 0.270141C20.1925 0.164884 20.4695 0.64685 20.1814 0.934922L13.6056 7.51072C12.2927 8.82366 10.4978 9.54384 8.63638 9.49399L5.79444 9.42197C5.50082 9.41643 5.26261 9.17821 5.25707 8.89014L5.23491 8.32508C5.22383 8.0647 5.03548 7.84311 4.78064 7.79879L1.00801 7.11739C0.442943 7.01767 0.387544 6.23102 0.930449 6.0482L19.7992 0.270141Z"
         fill="currentColor"
-        fillRule="evenodd"
-        d="M7 4.5a1 1 0 00-1 1v18a1 1 0 001 1h14a1 1 0 001-1v-13a1 1 0 00-.293-.707l-5-5A1 1 0 0016 4.5H7zM16 6l4 4h-4V6zm-7 9.5a1 1 0 011-1h8a1 1 0 010 2h-8a1 1 0 01-1-1zm0 4a1 1 0 011-1h8a1 1 0 010 2h-8a1 1 0 01-1-1z"
-        clipRule="evenodd"
       />
-    </svg>
-  ) : (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      fill="none"
-      stroke="none"
-      viewBox="0 0 28 28"
-    >
       <path
+        d="M15.7562 20.8892C15.5734 21.4321 14.7923 21.3767 14.687 20.8116L13.9834 16.9947C13.9336 16.7399 13.7175 16.546 13.4516 16.5404L12.9697 16.5293C12.676 16.5238 12.4378 16.2856 12.4323 15.992L12.3492 13.1611C12.2938 11.2886 13.0084 9.48266 14.3325 8.15864L20.875 1.61608C21.1631 1.32801 21.6451 1.605 21.5398 1.99833L15.7562 20.8837V20.8892Z"
         fill="currentColor"
-        d="M17.584 6.167h-9.75V23.5h13V9.417h-3.25v-3.25zM7.834 4h10.833L23 8.334V23.5a2.166 2.166 0 01-2.166 2.167h-13A2.167 2.167 0 015.667 23.5V6.167A2.167 2.167 0 017.834 4zM10 13.75h8.667v2.167H10V13.75zm0 4.334h8.667v2.166H10v-2.166z"
       />
     </svg>
   );
@@ -282,33 +262,21 @@ export const BottomTabSettingIcon: FunctionComponent<{
   width: string;
   height: string;
 }> = ({ width, height }) => {
-  const isActive = useIsTabActive();
-
-  return isActive ? (
+  return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
       width={width}
       height={height}
+      viewBox="0 0 22 22"
       fill="none"
-      viewBox="0 0 28 28"
+      xmlns="http://www.w3.org/2000/svg"
     >
       <path
+        d="M20.9475 21.1908C21.2725 21.1908 21.5203 20.9099 21.4983 20.5905C21.267 17.1151 19.0749 14.3613 16.4258 14.3613H5.89518C3.24601 14.3613 1.05397 17.1096 0.822651 20.5905C0.800621 20.9154 1.04846 21.1908 1.37341 21.1908H20.9475Z"
         fill="currentColor"
-        d="M14 2.833c-.616 0-1.22.053-1.809.153l-.363 1.519c-.564 2.36-2.968 3.762-5.272 3.074l-1.266-.38c-.76.99-1.369 2.115-1.79 3.332l.94.911a4.274 4.274 0 010 6.115l-.94.912a11.799 11.799 0 001.79 3.33l1.266-.378c2.304-.689 4.708.714 5.272 3.074l.363 1.518a10.73 10.73 0 003.618 0l.363-1.518c.564-2.36 2.968-3.763 5.272-3.075l1.266.38c.76-.99 1.369-2.115 1.79-3.331l-.94-.912a4.274 4.274 0 010-6.115l.94-.911A11.801 11.801 0 0022.71 7.2l-1.266.379c-2.304.688-4.708-.714-5.272-3.074l-.363-1.519c-.59-.1-1.193-.153-1.809-.153zm0 8.485c1.74 0 3.15 1.424 3.15 3.182 0 1.757-1.41 3.181-3.15 3.181s-3.15-1.424-3.15-3.181c0-1.758 1.41-3.182 3.15-3.182z"
       />
-    </svg>
-  ) : (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width={width}
-      height={height}
-      fill="none"
-      stroke="none"
-      viewBox="0 0 28 28"
-    >
       <path
+        d="M16.7075 3.49644C16.344 3.21005 15.8703 2.91263 15.281 2.69784C15.0497 2.60971 14.8239 2.54913 14.6036 2.49956C14.2676 2.42245 14.1519 1.99837 14.4273 1.78908C14.4273 1.78908 14.4383 1.78357 14.4438 1.77806C14.7192 1.56326 14.6036 1.11714 14.2566 1.06207C13.7719 0.979454 13.1551 0.951915 12.4666 1.07308C12.1967 1.12265 11.9434 1.18874 11.7176 1.26585C11.3926 1.376 11.0787 1.06758 11.1999 0.748133C11.2054 0.73161 11.2109 0.715087 11.2164 0.698564C11.3431 0.373613 11.0126 0.0541705 10.6821 0.186354C10.225 0.368106 9.68525 0.654503 9.15651 1.11714C8.78199 1.4421 8.66084 2.18563 8.27531 2.10852C7.99992 2.05344 8.17066 1.56877 8.13761 1.31542C8.09355 0.968438 7.65294 0.84727 7.42712 1.11714C7.11319 1.49717 6.77171 2.00387 6.52938 2.66479C6.44126 2.89611 6.38068 3.12192 6.33111 3.34223C6.254 3.6782 5.82991 3.79386 5.62062 3.51847C5.62062 3.51847 5.6151 3.50746 5.60959 3.50195C5.3948 3.22657 4.94869 3.34223 4.89361 3.68921C4.81099 4.17388 4.78345 4.79074 4.90462 5.47919C4.95419 5.74907 5.02028 6.00242 5.09739 6.22823C5.20754 6.55318 4.89911 6.86712 4.57967 6.74595C4.56315 6.74044 4.54663 6.73493 4.5301 6.72943C4.20515 6.60275 3.88571 6.93321 4.0179 7.26367C4.19965 7.7208 4.48605 8.26055 4.94869 8.78928C5.30118 9.19134 5.83541 9.21888 5.76381 9.59891C5.70873 9.87429 5.40031 9.76964 5.15247 9.80269C4.80549 9.84675 4.68433 10.2874 4.9542 10.5132C5.33423 10.8271 5.84093 11.1686 6.50185 11.4109C7.05261 11.6147 7.56482 11.6973 7.99441 11.7249C8.84809 12.3968 9.92208 12.8044 11.0897 12.8044H11.2109C13.9757 12.8044 16.2393 10.5407 16.2393 7.77588V7.73732C16.2393 6.62478 15.8703 5.60036 15.2535 4.7632C15.5894 4.44926 16.0576 4.28404 16.4982 4.21794C16.8507 4.16838 16.9939 3.72226 16.713 3.50195L16.7075 3.49644Z"
         fill="currentColor"
-        d="M23.12 15.259a1.138 1.138 0 010-1.518l1.5-1.656a1.134 1.134 0 00.14-1.345l-2.341-3.978a1.164 1.164 0 00-.536-.476 1.19 1.19 0 00-.717-.076l-2.2.437c-.28.056-.572.01-.82-.13a1.155 1.155 0 01-.527-.63l-.714-2.104a1.152 1.152 0 00-.428-.567c-.2-.14-.439-.215-.684-.214h-4.682a1.186 1.186 0 00-.72.197c-.21.141-.37.346-.45.584l-.656 2.105c-.091.266-.279.49-.527.63s-.54.185-.82.129L5.68 6.21a1.19 1.19 0 00-.67.102 1.163 1.163 0 00-.501.45L2.168 10.74a1.134 1.134 0 00.117 1.345l1.487 1.656a1.138 1.138 0 010 1.518l-1.487 1.656a1.14 1.14 0 00-.117 1.345l2.341 3.978c.123.21.31.377.535.476.225.099.476.126.718.076l2.2-.437c.28-.056.572-.01.82.13.248.139.435.363.526.63l.714 2.104c.082.238.24.443.452.584.211.141.464.21.719.197h4.682c.245.001.485-.074.684-.214.2-.14.35-.34.428-.567l.714-2.105c.091-.266.279-.49.527-.63s.54-.185.82-.129l2.2.437c.241.05.492.023.717-.076.225-.1.412-.266.535-.476l2.341-3.978a1.133 1.133 0 00-.14-1.345l-1.58-1.656zm-1.743 1.54l.936 1.035-1.498 2.553-1.382-.276a3.566 3.566 0 00-2.464.396 3.463 3.463 0 00-1.574 1.904l-.445 1.288h-2.996l-.422-1.311a3.463 3.463 0 00-1.574-1.904 3.566 3.566 0 00-2.464-.396l-1.381.276-1.522-2.541.936-1.035a3.415 3.415 0 00.895-2.3c0-.848-.319-1.667-.895-2.3l-.936-1.034 1.498-2.53 1.382.276c.843.17 1.72.029 2.464-.395A3.463 3.463 0 0011.509 6.6l.445-1.3h2.996l.445 1.311c.27.803.83 1.48 1.574 1.904a3.566 3.566 0 002.464.396l1.382-.276 1.498 2.552-.936 1.035a3.415 3.415 0 00-.884 2.288c0 .844.314 1.658.884 2.289zm-7.925-6.898c-.926 0-1.831.27-2.601.775a4.618 4.618 0 00-1.725 2.064 4.524 4.524 0 00-.266 2.657c.18.893.626 1.712 1.281 2.355a4.709 4.709 0 002.398 1.259 4.76 4.76 0 002.705-.262 4.665 4.665 0 002.101-1.694c.515-.756.79-1.645.79-2.555 0-1.22-.494-2.39-1.372-3.252A4.725 4.725 0 0013.452 9.9zm0 6.899c-.463 0-.916-.135-1.3-.388a2.31 2.31 0 01-.863-1.032 2.262 2.262 0 01-.133-1.329c.09-.446.313-.856.64-1.177a2.38 2.38 0 012.551-.498c.429.173.794.468 1.052.846a2.27 2.27 0 01-.292 2.904 2.362 2.362 0 01-1.655.674z"
       />
     </svg>
   );

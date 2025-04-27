@@ -336,28 +336,28 @@ const RoutesAfterReady: FunctionComponent = observer(() => {
         tabs={[
           {
             pathname: "/",
-            icon: <BottomTabHomeIcon width="1.75rem" height="1.75rem" />,
+            icon: <BottomTabHomeIcon width="22px" height="22px" />,
             text: intl.formatMessage({
               id: "bottom-tabs.home",
             }),
           },
           {
             pathname: "/ibc-swap",
-            icon: <BottomTabSwapIcon width="1.75rem" height="1.75rem" />,
+            icon: <BottomTabSwapIcon width="22px" height="22px" />,
             text: intl.formatMessage({
               id: "bottom-tabs.swap",
             }),
           },
           {
             pathname: "/activities",
-            icon: <BottomTabActivityIcon width="1.75rem" height="1.75rem" />,
+            icon: <BottomTabActivityIcon width="22px" height="22px" />,
             text: intl.formatMessage({
               id: "bottom-tabs.activity",
             }),
           },
           {
             pathname: "/setting",
-            icon: <BottomTabSettingIcon width="1.75rem" height="1.75rem" />,
+            icon: <BottomTabSettingIcon width="22px" height="22px" />,
             text: intl.formatMessage({
               id: "bottom-tabs.settings",
             }),
