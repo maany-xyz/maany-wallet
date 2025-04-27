@@ -194,7 +194,6 @@ const EmptyHeader: FunctionComponent = () => {
   );
 };
 
-
 const HeaderDirect: FunctionComponent<{
   title: string;
   paragraphs?: (string | ReactNode)[];
