@@ -20,3 +20,4 @@ export * from "./button2";
 
 export * from "./caption1";
 export * from "./caption2";
+export * from "./caption3";

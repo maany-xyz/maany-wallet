@@ -12,11 +12,14 @@ const Styles = {
       props.theme.mode === "light"
         ? ColorPalette["gray-400"]
         : ColorPalette.white};
+    font-size: 24px;
+    font-weight: 400;
   `,
   Paragraph: styled(Body3)`
     padding: 0 1.875rem;
     text-align: center;
-    color: ${ColorPalette["gray-300"]};
+    font-size: 16px;
+    color: ${ColorPalette["gray-200"]};
   `,
 };
 

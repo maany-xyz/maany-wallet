@@ -32,7 +32,7 @@ export const Buttons: FunctionComponent<{
               text={intl.formatMessage({
                 id: "page.main.components.buttons.deposit-button",
               })}
-              color="secondary"
+              color="neutral"
               onClick={onClickDeposit}
             />
           </Skeleton>
@@ -44,7 +44,7 @@ export const Buttons: FunctionComponent<{
               text={intl.formatMessage({
                 id: "page.main.components.buttons.buy-button",
               })}
-              color="secondary"
+              color="neutral"
               onClick={onClickBuy}
             />
           </Skeleton>
@@ -57,6 +57,7 @@ export const Buttons: FunctionComponent<{
                 id: "page.main.components.buttons.send-button",
               })}
               disabled={!hasBalance}
+              color="neutral"
               onClick={() => {
                 navigate(
                   `/send/select-asset?navigateTo=${encodeURIComponent(

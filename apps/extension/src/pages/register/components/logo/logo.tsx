@@ -2,13 +2,19 @@ import React from "react";
 
 type Props = {
   fill?: string;
+  width?: string | number;
+  height?: string | number;
 };
 
-export const Logo: React.FC<Props> = ({ ...props }) => {
+export const Logo: React.FC<Props> = ({
+  width = "165",
+  height = "136",
+  ...props
+}) => {
   return (
     <svg
-      width="165"
-      height="136"
+      width={width}
+      height={height}
       viewBox="0 0 165 136"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
