@@ -246,10 +246,10 @@ export class ChainsUpdateService {
         // Ignore error to proceed to tryUpdateChainInfoFromRpcOrRest if it fails.
       }
     }
-    console.log("are we moving to this line ?");
     const updated2 = await this.chainsService.tryUpdateChainInfoFromRpcOrRest(
       chainIdentifier
     );
+    console.log("updated with: ", updated2);
 
     return updated1 || updated2;
   }
