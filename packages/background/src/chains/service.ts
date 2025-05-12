@@ -512,26 +512,31 @@ export class ChainsService {
     isEvmOnlyChain: boolean
   ): Promise<ChainInfo> {
     const chainIdentifier = ChainIdHelper.parse(chainId).identifier;
-    const domain = "http://localhost:8080"; // "https://raw.githubusercontent.com";
+    const domain = "http://localhost:3000"; // "https://raw.githubusercontent.com"; //  ;
+
     console.log(
       "in fetchFromRepo with chainId",
       chainIdentifier,
       " and domain; ",
       domain
     );
+
+    const finishedUrl = `${domain}/data/${chainIdentifier}.json`;
+    // this.communityChainInfoRepo.alternativeURL
+    //   ? this.communityChainInfoRepo.alternativeURL
+    //       .replace("{chain_identifier}", chainIdentifier)
+    //       .replace("/cosmos/", isEvmOnlyChain ? "/evm/" : "/cosmos/")
+    //   : `${domain}/${this.communityChainInfoRepo.organizationName}/${
+    //       this.communityChainInfoRepo.repoName
+    //     }/${this.communityChainInfoRepo.branchName}/${
+    //       isEvmOnlyChain ? "evm" : "cosmos"
+    //     }/${chainIdentifier}.json`;
+
+    console.log("the finished url is: ", finishedUrl);
+
     const res = await simpleFetch<
       (Omit<ChainInfo, "rest"> & { websocket: string }) | ChainInfo
-    >(
-      this.communityChainInfoRepo.alternativeURL
-        ? this.communityChainInfoRepo.alternativeURL
-            .replace("{chain_identifier}", chainIdentifier)
-            .replace("/cosmos/", isEvmOnlyChain ? "/evm/" : "/cosmos/")
-        : `${domain}/${this.communityChainInfoRepo.organizationName}/${
-            this.communityChainInfoRepo.repoName
-          }/${this.communityChainInfoRepo.branchName}/${
-            isEvmOnlyChain ? "evm" : "cosmos"
-          }/${chainIdentifier}.json`
-    );
+    >(finishedUrl);
     console.log("with result: ", res);
     const chainInfo: ChainInfo =
       "rest" in res.data && !isEvmOnlyChain
@@ -563,7 +568,6 @@ export class ChainsService {
 
   async tryUpdateChainInfoFromRpcOrRest(chainId: string): Promise<boolean> {
     console.log("In try update chain with chainId: ", chainId);
-    console.log("anither console biatchfffff");
     if (!this.hasChainInfo(chainId)) {
       throw new Error(`${chainId} is not registered`);
     }
@@ -571,6 +575,7 @@ export class ChainsService {
     const chainIdentifier = ChainIdHelper.parse(chainId).identifier;
 
     const chainInfo = this.getChainInfoOrThrow(chainId);
+    console.log("with chaininfo: ", chainInfo);
 
     if (this.isEvmOnlyChain(chainInfo.chainId)) {
       // TODO: evm 체인에서의 chain info 업데이트 로직에 대해서는 나중에 구현한다.
@@ -592,6 +597,8 @@ export class ChainsService {
           };
         }
     >(chainInfo.rpc, "/status");
+
+    console.log("statusReponse is: ", statusResponse);
 
     const statusResult = (() => {
       if ("result" in statusResponse.data) {

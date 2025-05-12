@@ -15,5 +15,4 @@
     - Only when running that, the actual changes are visible in the Chrome dev tool
 
 
-
-
+# Remove all calls to other chains
