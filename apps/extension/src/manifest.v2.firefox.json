@@ -6,9 +6,9 @@
     }
   },
   "icons": {
-    "16": "assets/icon-beta-16.png",
-    "48": "assets/icon-beta-48.png",
-    "128": "assets/icon-beta-128.png"
+    "16": "assets/maany-l-16.png",
+    "48": "assets/maany-l-48.png",
+    "128": "assets/maany-l-128.png"
   },
   "web_accessible_resources": [
     "injectedScript.bundle.js",

@@ -10,12 +10,11 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../stores";
 import {
   Buttons,
-  CopyAddress,
-  IBCTransferView,
   BuyCryptoModal,
+  ClaimAll,
+  IBCTransferView,
   UpdateNoteModal,
   UpdateNotePageData,
-  ClaimAll,
 } from "./components";
 import { Stack } from "../../components/stack";
 import { CoinPretty, PricePretty } from "@keplr-wallet/unit";
@@ -28,7 +27,7 @@ import { H1, Subtitle3, Subtitle4 } from "../../components/typography";
 import { ColorPalette, SidePanelMaxWidth } from "../../styles";
 import { AvailableTabView } from "./available";
 import { StakedTabView } from "./staked";
-import { animated, useSpringValue, easings } from "@react-spring/web";
+import { animated, easings, useSpringValue } from "@react-spring/web";
 import { defaultSpringConfig } from "../../styles/spring";
 import { IChainInfoImpl, QueryError } from "@keplr-wallet/stores";
 import { Skeleton } from "../../components/skeleton";
@@ -54,6 +53,7 @@ import { NewSidePanelHeaderTop } from "./new-side-panel-header-top";
 import { ModularChainInfo } from "@keplr-wallet/types";
 import { Column, Columns } from "../../components/column";
 import { Button } from "../../components/button";
+import CopyAddressModal from "../../components/CopyAddress";
 
 export interface ViewToken {
   token: CoinPretty;
@@ -391,13 +391,7 @@ export const MainPage: FunctionComponent<{
       />
       <Box paddingX="0.75rem" paddingBottom="1.5rem">
         <Stack gutter="0.75rem">
-          <CopyAddress
-            onClick={() => {
-              analyticsStore.logEvent("click_copyAddress");
-              setIsOpenDepositModal(true);
-            }}
-            isNotReady={isNotReady}
-          />
+          <CopyAddressModal />
           <YAxis alignX="center">
             <LayeredHorizontalRadioGroup
               size={"large"}

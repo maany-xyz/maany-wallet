@@ -24,6 +24,7 @@ export const TextInput = forwardRef<
       bottom,
       isLoading,
       autoComplete,
+      textInputBackgroundColor,
       ...props
     },
     ref
@@ -40,6 +41,7 @@ export const TextInput = forwardRef<
           paragraph={paragraph}
           error={error}
           disabled={props.disabled}
+          textInputBackgroundColor={textInputBackgroundColor}
           errorBorder={props.errorBorder}
         >
           <Columns sum={1}>
@@ -59,6 +61,8 @@ export const TextInput = forwardRef<
             <Column weight={1}>
               <Styles.TextInput
                 {...props}
+                textInputBackgroundColor={textInputBackgroundColor}
+                color={"white"}
                 autoComplete={autoComplete || "off"}
                 paragraph={paragraph}
                 error={error}
