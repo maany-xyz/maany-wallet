@@ -41,8 +41,15 @@ export const DebounceSearchTextInput = forwardRef<
     <TextInput
       autoCapitalize="none"
       value={searchWord}
+      placeholderTextColor={'white'}
+      textInputBackgroundColor={'#2d2d2d'}
       onChangeText={e => setSearchWord(e)}
       {...props}
+      style={{
+        ...(props?.style || {}),
+        backgroundColor: '#2d2d2d',
+        color: 'white',
+      }}
       ref={ref}
       left={LeftIcon}
     />

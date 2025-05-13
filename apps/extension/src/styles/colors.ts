@@ -51,7 +51,7 @@ export const ColorPalette = {
   "orange-200": "#FFAD80",
   "orange-300": "#FC8441",
   "orange-400": "#FA6410",
-  "orange-500": "#D7560E",
+  "orange-500": "#FF5934",
   "orange-600": "#8F3A0A",
   "orange-700": "#58270B",
   "orange-800": "#2D1609",
