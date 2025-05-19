@@ -17,6 +17,8 @@ export const SearchTextInput = forwardRef<
     <TextInput
       {...props}
       ref={ref}
+      color={"white"}
+      textInputBackgroundColor={"#2d2d2d"}
       left={
         <Box
           style={{
@@ -31,7 +33,7 @@ export const SearchTextInput = forwardRef<
             })(),
           }}
         >
-          <SearchIcon width="1.25rem" height="1.25rem" />
+          <SearchIcon width="1.25rem" height="1.25rem" color={"white"} />
         </Box>
       }
     />

@@ -44,6 +44,7 @@ export const Styles = {
   TextInputContainer: styled.div<
     Pick<TextInputProps, "error" | "disabled" | "paragraph" | "errorBorder"> & {
       isTextarea?: boolean;
+      textInputBackgroundColor?: string;
     }
   >`
     position: relative;
@@ -103,9 +104,7 @@ export const Styles = {
 
     border-radius: 30px;
     background-color: ${(props) =>
-      props.theme.mode === "light"
-        ? ColorPalette["white"]
-        : ColorPalette["gray-700"]};
+      props.textInputBackgroundColor || ColorPalette["gray-700"]};
 
     ${({ disabled }) => {
       if (disabled) {
@@ -113,16 +112,16 @@ export const Styles = {
       }
     }}
   `,
-  TextInput: styled.input<TextInputProps & { isTextarea?: boolean }>`
+  TextInput: styled.input<
+    TextInputProps & { isTextarea?: boolean; textInputBackgroundColor?: string }
+  >`
     width: 100%;
     height: ${({ isTextarea }) => (isTextarea ? undefined : "3.25rem")};
     margin: 0;
     padding: ${({ isTextarea }) =>
       isTextarea ? "0.75rem 0.75rem" : "0 0.75rem"};
     background-color: ${(props) =>
-      props.theme.mode === "light"
-        ? ColorPalette["white"]
-        : ColorPalette["gray-700"]};
+      props?.textInputBackgroundColor || ColorPalette["gray-700"]};
     border: 0;
     border-radius: 30px;
 

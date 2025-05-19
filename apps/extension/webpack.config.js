@@ -60,7 +60,7 @@ const fileRule = {
 };
 
 const keplrLogoBase64 = `data:image/png;base64,${fs.readFileSync(
-  "src/public/assets/icon/icon-128.png",
+  "src/public/assets/icon/maany-l-128.png",
   "base64"
 )}`;
 
