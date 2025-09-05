@@ -113,6 +113,13 @@ window.keplr = new Keplr(
   new InExtensionMessageRequester()
 );
 
+Object.defineProperty(window, "maany", {
+  get() {
+    return (window as any).keplr;
+  },
+  configurable: true,
+});
+
 const RoutesAfterReady: FunctionComponent = observer(() => {
   const {
     chainStore,

@@ -44,46 +44,90 @@ export const EmbedChainInfos: (ChainInfo | ModularChainInfo)[] = [
     features: ["ibc-transfer", "ibc-go"],
   },
   {
-    rpc: "https://rpc-cosmoshub.keplr.app",
-    rest: "https://lcd-cosmoshub.keplr.app",
-    chainId: "cosmoshub-4",
-    chainName: "Cosmos Hub",
+    rpc: "http://localhost:26668",
+    rest: "http://localhost:1318",
+    chainId: "maanydex",
+    chainName: "Maany DEX",
     stakeCurrency: {
-      coinDenom: "ATOM",
-      coinMinimalDenom: "uatom",
+      coinDenom: "MAANY",
+      coinMinimalDenom: "umaany",
       coinDecimals: 6,
-      coinGeckoId: "cosmos",
     },
     walletUrl:
       process.env.NODE_ENV === "production"
         ? "https://wallet.keplr.app/chains/cosmos-hub"
-        : "http://localhost:8080/chains/cosmos-hub",
+        : "http://localhost:8080/chains/maany-mainnet",
     walletUrlForStaking:
       process.env.NODE_ENV === "production"
         ? "https://wallet.keplr.app/chains/cosmos-hub"
-        : "http://localhost:8080/chains/cosmos-hub",
+        : "http://localhost:8080/chains/maany-mainnet",
     bip44: {
       coinType: 118,
     },
-    bech32Config: Bech32Address.defaultBech32Config("cosmos"),
+    bech32Config: Bech32Address.defaultBech32Config("maany-dex"),
     currencies: [
       {
-        coinDenom: "ATOM",
-        coinMinimalDenom: "uatom",
+        coinDenom: "MAANY",
+        coinMinimalDenom: "umaany",
         coinDecimals: 6,
-        coinGeckoId: "cosmos",
+      },
+      // Optional: expose your "tokenB" test asset so it appears in the UI
+      {
+        coinDenom: "TKB",
+        coinMinimalDenom: "tokenB",
+        coinDecimals: 6, // you set `tkb` exponent 6 in genesis; adjust to your preference
       },
     ],
     feeCurrencies: [
       {
-        coinDenom: "ATOM",
-        coinMinimalDenom: "uatom",
+        coinDenom: "MAANY",
+        coinMinimalDenom: "umaany",
         coinDecimals: 6,
-        coinGeckoId: "cosmos",
       },
     ],
     features: ["ibc-transfer", "ibc-go"],
   },
+  // {
+  //   rpc: "https://rpc-cosmoshub.keplr.app",
+  //   rest: "https://lcd-cosmoshub.keplr.app",
+  //   chainId: "cosmoshub-4",
+  //   chainName: "Cosmos Hub",
+  //   stakeCurrency: {
+  //     coinDenom: "ATOM",
+  //     coinMinimalDenom: "uatom",
+  //     coinDecimals: 6,
+  //     coinGeckoId: "cosmos",
+  //   },
+  //   walletUrl:
+  //     process.env.NODE_ENV === "production"
+  //       ? "https://wallet.keplr.app/chains/cosmos-hub"
+  //       : "http://localhost:8080/chains/cosmos-hub",
+  //   walletUrlForStaking:
+  //     process.env.NODE_ENV === "production"
+  //       ? "https://wallet.keplr.app/chains/cosmos-hub"
+  //       : "http://localhost:8080/chains/cosmos-hub",
+  //   bip44: {
+  //     coinType: 118,
+  //   },
+  //   bech32Config: Bech32Address.defaultBech32Config("cosmos"),
+  //   currencies: [
+  //     {
+  //       coinDenom: "ATOM",
+  //       coinMinimalDenom: "uatom",
+  //       coinDecimals: 6,
+  //       coinGeckoId: "cosmos",
+  //     },
+  //   ],
+  //   feeCurrencies: [
+  //     {
+  //       coinDenom: "ATOM",
+  //       coinMinimalDenom: "uatom",
+  //       coinDecimals: 6,
+  //       coinGeckoId: "cosmos",
+  //     },
+  //   ],
+  //   features: ["ibc-transfer", "ibc-go"],
+  // },
   // {
   //   rpc: "https://rpc-osmosis.keplr.app",
   //   rest: "https://lcd-osmosis.keplr.app",

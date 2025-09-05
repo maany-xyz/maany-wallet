@@ -520,7 +520,7 @@ export class ChainsService {
       " and domain; ",
       domain
     );
-
+    console.log("some new message");
     const finishedUrl = `${domain}/data/${chainIdentifier}.json`;
     // this.communityChainInfoRepo.alternativeURL
     //   ? this.communityChainInfoRepo.alternativeURL

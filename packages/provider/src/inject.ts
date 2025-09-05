@@ -82,7 +82,7 @@ function defineUnwritablePropertyIfPossible(o: any, p: string, value: any) {
 }
 
 export function injectKeplrToWindow(keplr: IKeplr): void {
-  defineUnwritablePropertyIfPossible(window, "keplr", keplr);
+  defineUnwritablePropertyIfPossible(window, "maany", keplr);
   defineUnwritablePropertyIfPossible(
     window,
     "getOfflineSigner",
