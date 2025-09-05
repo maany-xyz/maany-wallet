@@ -18,6 +18,20 @@
 # Env Var Config
 - For testing just fill out env vars in webpack.config file
 
+# Notes on Maany-Dex Addition
+- included new object in config.ts
+    -> new chain needs new `rest` port, which is not occupied to avoid warning: `expected maany/cosmos got neutron`
+    - Note: the chain must have Rest API enabled in `config.toml`
+    -> Test: type `localhost:<port-nr>` should see a result object in browser
+- server: if we include a new object somewhere in background.ts we try to fetch the chain info from our list (localhost:3000/data/<chain-id>.json). Usually if there is no info the chain info should come from the config.ts file. But if you provide it ones via the server it kind of seems to get cached somewhere, i.e. takes the ones provided info even if you remove the chain info from the server. So best thing is to have a proper json file on that server for every new chain
+- fees: can be adjusted under feecurrency in config.ts / json file
+
+# TODOS:
+- Get IBC transactions working
+- How is the workflow of creating a pool or swapping a token on the DEX concerning IBC Logic
+    - We should (if possible) chain operations: check if we have MAANY (either Provider or DEX), if only on provider -> make IBC tx to the DEX and from there the GAMM operation (keep outcome on the DEX or not?)
+
+
 # MVP Feature Set
 
 - Deposit Button & Copy Address Button
